@@ -1,54 +1,58 @@
 {
-  "name": "@eliware/discord-webhook",
-  "type": "module",
-  "version": "1.1.0",
-  "description": "A Node.js discord-webhook.",
-  "main": "index.cjs",
-  "module": "index.mjs",
-  "types": "index.d.ts",
-  "files": [
-    "index.mjs",
-    "index.cjs",
-    "index.d.ts",
-    "README.md",
-    "LICENSE"
-  ],
-  "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.cjs",
-      "types": "./index.d.ts"
-    }
-  },
-  "scripts": {
-    "test": "npx --node-options=\"--experimental-vm-modules --no-warnings\" jest --detectOpenHandles --silent"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/eliware/discord-webhook.git"
-  },
-    "keywords": [
-        "discord-webhook",
-        "nodejs"
+    "name": "@eliware/discord-webhook",
+    "type": "module",
+    "version": "1.1.1",
+    "description": "A simple, promise-based Discord webhook sender for Node.js with built-in rate limit handling.",
+    "module": "index.mjs",
+    "types": "index.d.ts",
+    "files": [
+        "index.mjs",
+        "index.d.ts",
+        "README.md",
+        "LICENSE"
     ],
-  "author": "Eli Sterling, eliware.org <eli@eliware.org>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/eliware/discord-webhook/issues"
-  },
-  "homepage": "https://github.com/eliware/discord-webhook#readme",
-  "devDependencies": {
-    "jest": "^30.0.4"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "testMatch": [
-      "**/?(*.)+(spec|test).[jt]s?(x)",
-      "**/?(*.)+(spec|test).mjs",
-      "**/?(*.)+(spec|test).cjs"
-    ]
-  },
-  "dependencies": {
-    "@eliware/common": "^1.1.1"
-  }
+    "exports": {
+        ".": {
+            "import": "./index.mjs",
+            "types": "./index.d.ts"
+        }
+    },
+    "scripts": {
+        "test": "npx --node-options=\"--experimental-vm-modules --no-warnings\" jest --detectOpenHandles --silent"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/eliware/discord-webhook.git"
+    },
+    "keywords": [
+        "discord",
+        "webhook",
+        "discord-webhook",
+        "nodejs",
+        "rate-limit",
+        "esm",
+        "typescript",
+        "promise",
+        "fetch"
+    ],
+    "author": "Eli Sterling, eliware.org <eli@eliware.org>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/eliware/discord-webhook/issues"
+    },
+    "homepage": "https://github.com/eliware/discord-webhook#readme",
+    "devDependencies": {
+        "jest": "^30.0.4"
+    },
+    "jest": {
+        "testEnvironment": "node",
+        "testMatch": [
+            "**/?(*.)+(spec|test).[jt]s?(x)",
+            "**/?(*.)+(spec|test).mjs",
+            "**/?(*.)+(spec|test).cjs"
+        ]
+    },
+    "dependencies": {
+        "node-fetch": "^3.3.2"
+    }
 }
