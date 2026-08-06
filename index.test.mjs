@@ -138,3 +138,17 @@ test('aborts a rate-limit wait from the caller signal', async () => {
   setImmediate(() => controller.abort());
   await expect(pending).rejects.toThrow('Webhook request aborted.');
 });
+
+test('rejects payloads that exceed Discord limits before fetch', async () => {
+  const fetchFn = jest.fn();
+  await expect(sendMessage({ body: { content: 'x'.repeat(2001) }, url: 'https://test', fetchFn })).rejects.toThrow(/content exceeds 2000/);
+  await expect(sendMessage({ body: { embeds: [{ description: 'x'.repeat(4097) }] }, url: 'https://test', fetchFn })).rejects.toThrow(/description exceeds 4096/);
+  expect(fetchFn).not.toHaveBeenCalled();
+});
+
+test('rejects excessive fields, embeds, and aggregate embed text', async () => {
+  const fetchFn = jest.fn();
+  await expect(sendMessage({ body: { embeds: Array.from({ length: 11 }, () => ({})) }, url: 'https://test', fetchFn })).rejects.toThrow(/at most 10 embeds/);
+  await expect(sendMessage({ body: { embeds: [{ fields: Array.from({ length: 26 }, () => ({ name: 'n', value: 'v' })) }] }, url: 'https://test', fetchFn })).rejects.toThrow(/at most 25 fields/);
+  await expect(sendMessage({ body: { embeds: [{ title: 'x'.repeat(256), description: 'x'.repeat(4096), footer: { text: 'x'.repeat(2048) } }] }, url: 'https://test', fetchFn })).rejects.toThrow(/text exceeds 6000/);
+});
