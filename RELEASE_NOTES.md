@@ -1,5 +1,14 @@
 # Release Notes
 
+## 1.1.6 — August 6, 2026
+
+- Added preflight validation for Discord webhook payload limits before network requests.
+- Rejects oversized message content, embeds, fields, titles, descriptions, footers, authors, and aggregate embed text.
+- Exported `DISCORD_LIMITS` and `validateWebhookBody()` for consumers that need explicit validation.
+- Updated README usage and API documentation for validation, timeouts, cancellation, thread targeting, and `wait` responses.
+- Expanded TypeScript definitions for author fields, limits, and validation APIs.
+- Added malformed-payload and validation coverage; all tests pass with 100% coverage.
+
 ## 1.1.2 — Current changes
 
 - Standardized Node.js 26 CI workflow.
