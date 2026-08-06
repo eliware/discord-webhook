@@ -66,7 +66,7 @@ test('sendMessage uses environment URL and retries with default delay for invali
   });
 
   await expect(sendMessage({ body: { content: 'hi' }, fetchFn, maxRetries: 1 })).resolves.toBe(successResponse);
-  expect(fetchFn).toHaveBeenCalledWith('http://env-test', expect.any(Object));
+  expect(fetchFn).toHaveBeenCalledWith('http://env-test/', expect.any(Object));
   expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 1000);
 
   setTimeoutSpy.mockRestore();
@@ -80,4 +80,26 @@ test('sendMessage handles a zero retry limit', async () => {
   await expect(sendMessage({ body: {}, url: 'http://test', fetchFn, maxRetries: 0 }))
     .rejects.toThrow('Rate limited: max retries exceeded');
   expect(fetchFn).toHaveBeenCalledTimes(1);
+});
+
+
+test('validates retry and timeout options', async () => {
+  const fetchFn = createMockFetch([{ status: 204, ok: true }]);
+  await expect(sendMessage({ body: {}, url: 'https://test', fetchFn, maxRetries: -1 })).rejects.toThrow('maxRetries');
+  await expect(sendMessage({ body: {}, url: 'https://test', fetchFn, maxRetries: 11 })).rejects.toThrow('maxRetries');
+  await expect(sendMessage({ body: {}, url: 'https://test', fetchFn, timeoutMs: 0 })).rejects.toThrow('timeoutMs');
+  await expect(sendMessage({ body: {}, url: 'bad', fetchFn })).rejects.toThrow('valid webhook URL');
+});
+
+test('supports webhook query options and reports HTTP errors', async () => {
+  const response = { status: 400, ok: false, text: async () => 'bad payload' };
+  const fetchFn = jest.fn(async () => response);
+  await expect(sendMessage({ body: {}, url: 'https://test/hook', fetchFn, wait: true, threadId: '42', threadName: 'thread' }))
+    .rejects.toThrow('400): bad payload');
+  expect(fetchFn.mock.calls[0][0]).toContain('wait=true');
+});
+
+test('supports abort signal', async () => {
+  const controller = new AbortController(); controller.abort();
+  await expect(sendMessage({ body: {}, url: 'https://test', signal: controller.signal })).rejects.toThrow('aborted');
 });
