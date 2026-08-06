@@ -152,3 +152,21 @@ test('rejects excessive fields, embeds, and aggregate embed text', async () => {
   await expect(sendMessage({ body: { embeds: [{ fields: Array.from({ length: 26 }, () => ({ name: 'n', value: 'v' })) }] }, url: 'https://test', fetchFn })).rejects.toThrow(/at most 25 fields/);
   await expect(sendMessage({ body: { embeds: [{ title: 'x'.repeat(256), description: 'x'.repeat(4096), footer: { text: 'x'.repeat(2048) } }] }, url: 'https://test', fetchFn })).rejects.toThrow(/text exceeds 6000/);
 });
+
+test('validates field shapes and field-specific limits', async () => {
+  const fetchFn = jest.fn();
+  await expect(sendMessage({ body: { embeds: [{ fields: [null] }] }, url: 'https://test', fetchFn })).rejects.toThrow(/field 1 must be an object/);
+  await expect(sendMessage({ body: { embeds: [{ fields: [{ name: 'x'.repeat(257), value: 'ok' }] }] }, url: 'https://test', fetchFn })).rejects.toThrow(/field 1 name exceeds 256/);
+  await expect(sendMessage({ body: { embeds: [{ fields: [{ name: 'ok', value: 'x'.repeat(1025) }] }] }, url: 'https://test', fetchFn })).rejects.toThrow(/field 1 value exceeds 1024/);
+});
+
+test('accepts a valid embed payload', async () => {
+  const response = { status: 204, ok: true };
+  await expect(sendMessage({ body: { embeds: [{ title: 'ok', fields: [{ name: 'n', value: 'v' }] }] }, url: 'https://test', fetchFn: async () => response })).resolves.toBe(response);
+});
+
+test('rejects malformed embeds and non-string text properties', async () => {
+  const fetchFn = jest.fn();
+  await expect(sendMessage({ body: { embeds: [[]] }, url: 'https://test', fetchFn })).rejects.toThrow(/embed 1 must be an object/);
+  await expect(sendMessage({ body: { embeds: [{ title: 42 }] }, url: 'https://test', fetchFn })).rejects.toThrow(/title must be a string/);
+});
