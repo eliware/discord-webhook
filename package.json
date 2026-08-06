@@ -43,7 +43,7 @@
   },
   "homepage": "https://github.com/eliware/discord-webhook#readme",
   "devDependencies": {
-    "jest": "^30.0.4"
+    "jest": "^30.4.2"
   },
   "jest": {
     "testEnvironment": "node",
