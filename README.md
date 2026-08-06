@@ -22,6 +22,8 @@
 - ESM-first, TypeScript types included
 - Customizable fetch for testing/mocking
 - Supports default webhook URL from `process.env.DISCORD_WEBHOOK`
+- Validates Discord payload size limits before making a request
+- Supports request timeouts, cancellation, threads, and `wait` responses
 
 ## Installation
 
@@ -55,7 +57,7 @@ const messageBody = { content: 'Hello from discord-webhook!' };
 
 ## API
 
-### sendMessage({ body, url = process.env.DISCORD_WEBHOOK, maxRetries = 3, fetchFn = fetch })
+### sendMessage({ body, url = process.env.DISCORD_WEBHOOK, maxRetries = 3, fetchFn = fetch, timeoutMs, signal, wait, threadId, threadName })
 
 Sends a message to a Discord webhook URL, handling rate limits with automatic retry.
 
@@ -65,6 +67,10 @@ Sends a message to a Discord webhook URL, handling rate limits with automatic re
 - `url` (string, optional): The Discord webhook URL. Defaults to `process.env.DISCORD_WEBHOOK`.
 - `maxRetries` (number, optional): Maximum number of retries on rate limit (default: 3).
 - `fetchFn` (function, optional): Custom fetch function for testing/mocking (default: `fetch`).
+- `timeoutMs` (number, optional): Request timeout in milliseconds.
+- `signal` (AbortSignal, optional): Cancels an in-flight request.
+- `wait` (boolean, optional): Requests the created Discord message response.
+- `threadId` / `threadName` (string, optional): Sends to a Discord thread.
 
 **Returns:**
 
@@ -72,7 +78,13 @@ Sends a message to a Discord webhook URL, handling rate limits with automatic re
 
 **Throws:**
 
-- Error if the URL or body is invalid, or if max retries are exceeded due to rate limiting.
+- Error if the URL or body is invalid.
+- Error if content or embed fields exceed Discord limits; validation happens before `fetch`.
+- Error if max retries are exceeded due to rate limiting.
+
+## Payload limits
+
+The library rejects payloads that Discord will refuse, including content over 2,000 characters, more than 10 embeds, more than 25 fields per embed, and embed text over 6,000 characters. It also validates title, description, field, footer, and author limits.
 
 ## TypeScript
 
