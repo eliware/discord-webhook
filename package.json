@@ -1,59 +1,60 @@
 {
-    "name": "@eliware/discord-webhook",
-    "type": "module",
-    "version": "1.1.2",
-    "description": "A simple, promise-based Discord webhook sender for Node.js with built-in rate limit handling.",
-    "module": "index.mjs",
-    "types": "index.d.ts",
-    "files": [
-        "index.mjs",
-        "index.d.ts",
-        "README.md",
-        "LICENSE"
-    ],
-    "exports": {
-        ".": {
-            "import": "./index.mjs",
-            "types": "./index.d.ts"
-        }
-    },
-    "scripts": {
-        "test": "npx --node-options=\"--experimental-vm-modules --no-warnings\" jest --detectOpenHandles --silent --coverage",
-        "test:gaps": "npm test -- --coverageReporters=text 2>&1 | awk '!/100%/'"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/eliware/discord-webhook.git"
-    },
-    "keywords": [
-        "discord",
-        "webhook",
-        "discord-webhook",
-        "nodejs",
-        "rate-limit",
-        "esm",
-        "typescript",
-        "promise",
-        "fetch"
-    ],
-    "author": "Eli Sterling, eliware.org <eli@eliware.org>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/eliware/discord-webhook/issues"
-    },
-    "homepage": "https://github.com/eliware/discord-webhook#readme",
-    "devDependencies": {
-        "jest": "^30.4.2"
-    },
-    "jest": {
-        "testEnvironment": "node",
-        "testMatch": [
-            "**/?(*.)+(spec|test).[jt]s?(x)",
-            "**/?(*.)+(spec|test).mjs",
-            "**/?(*.)+(spec|test).cjs"
-        ]
-    },
-    "dependencies": {
-        "node-fetch": "^3.3.2"
+  "name": "@eliware/discord-webhook",
+  "type": "module",
+  "version": "1.1.2",
+  "description": "A simple, promise-based Discord webhook sender for Node.js with built-in rate limit handling.",
+  "module": "index.mjs",
+  "types": "index.d.ts",
+  "files": [
+    "index.mjs",
+    "index.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "types": "./index.d.ts"
     }
+  },
+  "scripts": {
+    "test": "npx --node-options=\"--experimental-vm-modules --no-warnings\" jest --detectOpenHandles --silent --coverage",
+    "test:gaps": "npm test -- --coverageReporters=text 2>&1 | awk '!/100%/'",
+    "lint": "npx oxlint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eliware/discord-webhook.git"
+  },
+  "keywords": [
+    "discord",
+    "webhook",
+    "discord-webhook",
+    "nodejs",
+    "rate-limit",
+    "esm",
+    "typescript",
+    "promise",
+    "fetch"
+  ],
+  "author": "Eli Sterling, eliware.org <eli@eliware.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eliware/discord-webhook/issues"
+  },
+  "homepage": "https://github.com/eliware/discord-webhook#readme",
+  "devDependencies": {
+    "jest": "^30.4.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/?(*.)+(spec|test).[jt]s?(x)",
+      "**/?(*.)+(spec|test).mjs",
+      "**/?(*.)+(spec|test).cjs"
+    ]
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
 }
