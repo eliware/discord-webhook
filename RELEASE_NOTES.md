@@ -27,3 +27,12 @@
 - Added webhook options for `wait`, `thread_id`, and `thread_name`.
 - Expanded TypeScript definitions for Discord messages and embeds.
 - Expanded automated coverage for delivery, retry, validation, and error paths.
+
+## 1.1.5
+
+- Added complete coverage for timeout, cancellation, retry, and HTTP error paths.
+- Improved webhook delivery validation and bounded rate-limit retries.
+- Added request timeout and `AbortSignal` cancellation support.
+- Added `wait`, `thread_id`, and `thread_name` webhook options.
+- Expanded TypeScript definitions for Discord messages and embeds.
+- Confirmed clean linting and 100% test coverage across all metrics.
