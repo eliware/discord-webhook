@@ -9,7 +9,8 @@
         "index.mjs",
         "index.d.ts",
         "README.md",
-        "LICENSE"
+        "LICENSE",
+        "examples"
     ],
     "exports": {
         ".": {
