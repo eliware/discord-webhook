@@ -1,4 +1,4 @@
-import { sendMessage } from './index.mjs';
+import { sendMessage } from '../index.mjs';
 import { jest, test, expect } from '@jest/globals';
 
 // Mock fetch function
