@@ -25,6 +25,10 @@
 - Validates Discord payload size limits before making a request
 - Supports request timeouts, cancellation, threads, and `wait` responses
 
+## Requirements
+
+- Node.js 26 or newer
+
 ## Installation
 
 ```bash
@@ -88,16 +92,38 @@ The library rejects payloads that Discord will refuse, including content over 2,
 
 ## TypeScript
 
-Type definitions are included:
+Type definitions are included and cover `sendMessage`, `validateWebhookBody`, and `DISCORD_LIMITS`.
 
 ```ts
-export declare function sendMessage(params?: {
-  body: object;
-  url?: string;
-  maxRetries?: number;
-  fetchFn?: typeof fetch;
-}): Promise<Response>;
+const response = await sendMessage({
+  body: { content: 'Hello!' },
+  url: process.env.DISCORD_WEBHOOK,
+  maxRetries: 3,
+  timeoutMs: 30_000,
+  signal: abortController.signal,
+  wait: true,
+  threadId: 'thread-id',
+  threadName: 'thread-name',
+});
 ```
+
+## Errors / Troubleshooting
+
+`sendMessage` validates the webhook URL, body, retry and timeout options before making a request. HTTP failures include the response status and body when available. Rate limits are retried up to `maxRetries`; timeout and caller cancellation errors are reported explicitly.
+
+For local development, run:
+
+```bash
+npm test
+npm run test:gaps
+npm run lint
+npm run typecheck
+npm run pack
+```
+
+## Security
+
+Treat webhook URLs as credentials. Store them in `DISCORD_WEBHOOK` or another secret store; do not commit real URLs or log request credentials.
 
 ## Support
 
