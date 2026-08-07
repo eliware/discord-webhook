@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.1.7 — August 7, 2026
+
+- Fixed coverage-gap filtering so only genuinely incomplete coverage rows are reported.
+
 ## 1.1.6 — August 6, 2026
 
 - Added preflight validation for Discord webhook payload limits before network requests.
