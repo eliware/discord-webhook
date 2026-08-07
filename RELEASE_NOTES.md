@@ -3,49 +3,45 @@
 ## 1.1.7 — August 7, 2026
 
 - Fixed coverage-gap filtering so only genuinely incomplete coverage rows are reported.
+- Verification: tests pass with 100% coverage; Oxlint passes.
 
 ## 1.1.6 — August 6, 2026
 
 - Added preflight validation for Discord webhook payload limits before network requests.
 - Rejects oversized message content, embeds, fields, titles, descriptions, footers, authors, and aggregate embed text.
-- Exported `DISCORD_LIMITS` and `validateWebhookBody()` for consumers that need explicit validation.
-- Updated README usage and API documentation for validation, timeouts, cancellation, thread targeting, and `wait` responses.
-- Expanded TypeScript definitions for author fields, limits, and validation APIs.
-- Added malformed-payload and validation coverage; all tests pass with 100% coverage.
+- Exported `DISCORD_LIMITS` and `validateWebhookBody()`.
+- Updated README documentation for validation, timeouts, cancellation, thread targeting, and `wait` responses.
+- Expanded TypeScript definitions and validation tests.
+- Verification: tests pass with 100% coverage.
 
-## 1.1.2 — Current changes
+## 1.1.5 — August 6, 2026
 
-- Standardized Node.js 26 CI workflow.
+- Added complete coverage for timeout, cancellation, retry, and HTTP error paths.
+- Improved webhook delivery validation and bounded rate-limit retries.
+- Added request timeout, `AbortSignal`, `wait`, `thread_id`, and `thread_name` support.
+- Expanded TypeScript definitions.
+- Verification: tests pass with 100% coverage; lint passes.
+
+## 1.1.4 — August 6, 2026
+
+- Added manual GitHub Actions workflow dispatch support.
+- Added retry and timeout validation with bounded rate-limit retries.
+- Added request cancellation and detailed Discord response errors.
+- Expanded webhook options and TypeScript definitions.
+- Expanded automated coverage.
+
+## 1.1.3 — August 6, 2026
+
+- Added the standardized Oxlint command.
+- Updated package metadata and lockfiles for the Node.js 26 workflow conventions.
+
+## 1.1.2 — August 6, 2026
+
+- Standardized the Node.js 26 CI workflow.
 - Normalized Jest coverage and gap-testing scripts.
 - Added AgentX artifact ignore rules.
 - Updated dependencies and lockfiles.
 
-## Version history
+## 1.1.1 — December 9, 2025
 
-- `1.1.1` — Version 1.1.1 - 12-09-2025.
-
-
-## 1.1.3
-
-- Added the standardized Oxlint command.
-- Updated package metadata and lockfiles for the latest maintenance pass.
-- Synchronized the package with the current Eliware Node.js 26 workflow conventions.
-
-## 1.1.4
-
-- Added manual GitHub Actions workflow dispatch support.
-- Added retry and timeout validation with bounded rate-limit retries.
-- Added request cancellation through `AbortSignal`.
-- Added detailed errors for failed Discord responses.
-- Added webhook options for `wait`, `thread_id`, and `thread_name`.
-- Expanded TypeScript definitions for Discord messages and embeds.
-- Expanded automated coverage for delivery, retry, validation, and error paths.
-
-## 1.1.5
-
-- Added complete coverage for timeout, cancellation, retry, and HTTP error paths.
-- Improved webhook delivery validation and bounded rate-limit retries.
-- Added request timeout and `AbortSignal` cancellation support.
-- Added `wait`, `thread_id`, and `thread_name` webhook options.
-- Expanded TypeScript definitions for Discord messages and embeds.
-- Confirmed clean linting and 100% test coverage across all metrics.
+- Initial documented release.
