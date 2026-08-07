@@ -21,7 +21,8 @@
         "test": "npx --node-options=\"--experimental-vm-modules --no-warnings\" jest --detectOpenHandles --silent --coverage",
         "test:gaps": "npm test -- --coverageReporters=text 2>&1 | awk -F'|' 'NF >= 6 && $2 ~ /[0-9]/ && !($2 ~ /^[[:space:]]*100[[:space:]]*$/ && $3 ~ /^[[:space:]]*100[[:space:]]*$/ && $4 ~ /^[[:space:]]*100[[:space:]]*$/ && $5 ~ /^[[:space:]]*100[[:space:]]*$/)'",
         "lint": "npx oxlint .",
-        "typecheck": "tsc --project tsconfig.json"
+        "typecheck": "tsc --project tsconfig.json",
+        "pack": "npm pack --dry-run"
     },
     "repository": {
         "type": "git",
