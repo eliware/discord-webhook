@@ -3,7 +3,7 @@
 ## 1.1.7 — August 7, 2026
 
 - Fixed coverage-gap filtering so only genuinely incomplete coverage rows are reported.
-- Verification: tests pass with 100% coverage; Oxlint passes.
+- Verification: tests, coverage, gap checks, lint, typecheck, and package dry-run pass.
 
 ## 1.1.6 — August 6, 2026
 
