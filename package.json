@@ -57,8 +57,5 @@
             "**/?(*.)+(spec|test).mjs",
             "**/?(*.)+(spec|test).cjs"
         ]
-    },
-    "dependencies": {
-        "node-fetch": "^3.3.2"
     }
 }

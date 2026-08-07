@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 const DEFAULT_TIMEOUT = 30_000;
 const MAX_RETRIES = 10;
 
@@ -54,7 +52,7 @@ export async function sendMessage({
   body,
   url = process.env.DISCORD_WEBHOOK,
   maxRetries = 3,
-  fetchFn = fetch,
+  fetchFn = globalThis.fetch,
   timeoutMs = DEFAULT_TIMEOUT,
   signal,
   wait,
