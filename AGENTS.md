@@ -18,3 +18,7 @@ Run `npm test`, `npm run test:gaps`, `npm run lint`, `npm run typecheck`, and `n
 ## Changes
 
 Update README and examples with API changes. Do not bump versions, tag, publish, or push unless explicitly requested.
+- Do not over-engineer simple tasks.
+- Do not guess when confused.
+- Do not make random, pointless changes.
+- Check your own work before saying you're done.
