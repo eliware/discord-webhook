@@ -1,6 +1,6 @@
 # [![eliware.org](https://eliware.org/logos/brand.png)](https://discord.gg/M6aTR9eTwN)
 
-## @eliware/discord-webhook [![npm version](https://img.shields.io/npm/v/@eliware/discord-webhook.svg)](https://www.npmjs.com/package/@eliware/discord-webhook)[![license](https://img.shields.io/github/license/eliware/discord-webhook.svg)](LICENSE)[![build status](https://github.com/eliware/discord-webhook/actions/workflows/nodejs.yml/badge.svg)](https://github.com/eliware/discord-webhook/actions)
+## @eliware/discord-webhook v2.0.0 [![npm version](https://img.shields.io/npm/v/@eliware/discord-webhook.svg)](https://www.npmjs.com/package/@eliware/discord-webhook)[![license](https://img.shields.io/github/license/eliware/discord-webhook.svg)](LICENSE)[![build status](https://github.com/eliware/discord-webhook/actions/workflows/nodejs.yml/badge.svg)](https://github.com/eliware/discord-webhook/actions)
 
 > A simple, promise-based Discord webhook sender for Node.js with built-in rate limit handling.
 
@@ -111,7 +111,7 @@ const response = await sendMessage({
 
 ## Errors / Troubleshooting
 
-`sendMessage` validates the webhook URL, body, retry and timeout options before making a request. HTTP failures include the response status and body when available. Rate limits are retried up to `maxRetries`; timeout and caller cancellation errors are reported explicitly.
+`sendMessage` validates the webhook URL, body, retry and timeout options before making a request. HTTP failures include the response status and body when available. Rate limits are retried up to `maxRetries`; timeout and caller cancellation errors are reported explicitly. The default timeout is 30 seconds and retries are bounded to 10 even when a larger value is supplied.
 
 For local development, run:
 

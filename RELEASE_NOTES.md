@@ -1,6 +1,6 @@
 # Release Notes
 
-## 2.0.0 — Unreleased
+## 2.0.0 — August 25, 2026
 
 - Adopted the shared `@eliware/test` harness for testing and linting with strict
   100×4 coverage and removed direct Jest/Oxlint dependencies.
@@ -10,6 +10,8 @@
   auditing, and separated validation from tag-only publishing.
 - Breaking: the standard `test` and `lint` scripts now delegate to
   `@eliware/test`; the package remains ESM-only.
+- Verification: local and exact-HEAD Ubuntu/Windows CI passed; `tagit preflight`
+  passed with 100×4 coverage, zero-warning lint, audit, and package validation.
 
 ## 1.1.8 — August 7, 2026
 
