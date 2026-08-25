@@ -1,5 +1,16 @@
 # Release Notes
 
+## 2.0.0 — Unreleased
+
+- Adopted the shared `@eliware/test` harness for testing and linting with strict
+  100×4 coverage and removed direct Jest/Oxlint dependencies.
+- Updated package metadata with Node.js `>=26` support, public publishing
+  configuration, and the release-notes package allowlist.
+- Modernized CI validation for Ubuntu and Windows, added production dependency
+  auditing, and separated validation from tag-only publishing.
+- Breaking: the standard `test` and `lint` scripts now delegate to
+  `@eliware/test`; the package remains ESM-only.
+
 ## 1.1.8 — August 7, 2026
 
 - Aligned repository layout, scripts, CI, documentation, release notes, and package contents with Eliware library conventions.

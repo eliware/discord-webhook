@@ -13,7 +13,7 @@
 
 ## Validation
 
-Run `npm test`, `npm run test:gaps`, `npm run lint`, `npm run typecheck`, and `npm run pack`. Maintain 100% coverage without Istanbul ignore directives.
+Run `npm test`, `npm run lint`, `npm run typecheck`, `npm audit --omit=dev --audit-level=moderate`, and `npm run pack`. Maintain 100% coverage without Istanbul ignore directives.
 
 ## Changes
 

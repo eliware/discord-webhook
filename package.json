@@ -3,15 +3,21 @@
     "type": "module",
     "version": "1.1.8",
     "description": "A simple, promise-based Discord webhook sender for Node.js with built-in rate limit handling.",
-    "module": "index.mjs",
+    "engines": {
+        "node": ">=26"
+    },
     "types": "index.d.ts",
     "files": [
         "index.mjs",
         "index.d.ts",
         "README.md",
         "LICENSE",
+        "RELEASE_NOTES.md",
         "examples"
     ],
+    "publishConfig": {
+        "access": "public"
+    },
     "exports": {
         ".": {
             "import": "./index.mjs",
@@ -19,10 +25,10 @@
         }
     },
     "scripts": {
-        "test": "npx --node-options=\"--experimental-vm-modules --no-warnings\" jest --detectOpenHandles --silent --coverage",
-        "test:gaps": "npm test 2>&1 | grep '|' | grep -vF '|     100 |      100 |     100 |     100 |'",
-        "lint": "npx oxlint .",
+        "test": "eliware-test",
+        "lint": "eliware-test --lint",
         "typecheck": "tsc --project tsconfig.json",
+        "audit": "npm audit --omit=dev --audit-level=moderate",
         "pack": "npm pack --dry-run"
     },
     "repository": {
@@ -47,15 +53,7 @@
     },
     "homepage": "https://github.com/eliware/discord-webhook#readme",
     "devDependencies": {
-        "jest": "^30.4.2",
+        "@eliware/test": "^2.0.0",
         "typescript": "^7.0.2"
-    },
-    "jest": {
-        "testEnvironment": "node",
-        "testMatch": [
-            "**/?(*.)+(spec|test).[jt]s?(x)",
-            "**/?(*.)+(spec|test).mjs",
-            "**/?(*.)+(spec|test).cjs"
-        ]
     }
 }

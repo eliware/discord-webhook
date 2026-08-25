@@ -13,6 +13,8 @@
 - [Usage](#usage)
 - [API](#api)
 - [TypeScript](#typescript)
+- [Security and operations](#security-and-operations)
+- [Validation](#validation)
 - [License](#license)
 
 ## Features
@@ -115,9 +117,9 @@ For local development, run:
 
 ```bash
 npm test
-npm run test:gaps
 npm run lint
 npm run typecheck
+npm audit --omit=dev --audit-level=moderate
 npm run pack
 ```
 
