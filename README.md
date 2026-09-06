@@ -2,6 +2,8 @@
 
 ## @eliware/discord-webhook v2.0.0 [![npm version](https://img.shields.io/npm/v/@eliware/discord-webhook.svg)](https://www.npmjs.com/package/@eliware/discord-webhook)[![license](https://img.shields.io/github/license/eliware/discord-webhook.svg)](LICENSE)[![build status](https://github.com/eliware/discord-webhook/actions/workflows/nodejs.yml/badge.svg)](https://github.com/eliware/discord-webhook/actions)
 
+Documentation: [docs](docs/README.md) · [specifications](specs/README.md) · [examples](examples/README.md)
+
 > A simple, promise-based Discord webhook sender for Node.js with built-in rate limit handling.
 
 ---
