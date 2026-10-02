@@ -55,5 +55,20 @@
     "devDependencies": {
         "@eliware/test": "^5.0.0",
         "typescript": "^7.0.2"
+    },
+    "prettier": {
+      "printWidth": 100,
+      "tabWidth": 2,
+      "useTabs": false,
+      "semi": true,
+      "singleQuote": false,
+      "quoteProps": "as-needed",
+      "jsxSingleQuote": false,
+      "trailingComma": "all",
+      "bracketSpacing": true,
+      "bracketSameLine": false,
+      "arrowParens": "always",
+      "proseWrap": "preserve",
+      "endOfLine": "lf"
     }
 }
