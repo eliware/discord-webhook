@@ -1,68 +1,71 @@
 # Release Notes
 
-## 2.0.0 — August 25, 2026
+## 12.0.0 — 2026-10-12
 
-- Adopted the shared `@eliware/test` harness for testing and linting with strict
-  100×4 coverage and removed direct Jest/Oxlint dependencies.
-- Updated package metadata with Node.js `>=26` support, public publishing
-  configuration, and the release-notes package allowlist.
-- Modernized CI validation for Ubuntu and Windows, added production dependency
-  auditing, and separated validation from tag-only publishing.
-- Breaking: the standard `test` and `lint` scripts now delegate to
-  `@eliware/test`; the package remains ESM-only.
-- Verification: local and exact-HEAD Ubuntu/Windows CI passed; `tagit preflight`
-  passed with 100×4 coverage, zero-warning lint, audit, and package validation.
+### Changed
 
-## 1.1.8 — August 7, 2026
+- Align package metadata, source layout, documentation, and workflows with shared conventions.
+- Preserve the webhook API, rate-limit retries, cancellation, and payload checks.
 
-- Aligned repository layout, scripts, CI, documentation, release notes, and package contents with Eliware library conventions.
-- Added TypeScript declaration checking and standardized package validation.
-- Moved tests under `tests/` and included a runnable `examples/` file in the package.
-- Switched to Node.js 26 native `fetch`, removing the `node-fetch` runtime dependency.
-- Verification: tests, coverage, gap checks, lint, typecheck, smoke test, and package dry-run pass.
+## 2.0.0 — 2026-08-25
 
-## 1.1.7 — August 7, 2026
+### Changed
 
-- Fixed coverage-gap filtering so only genuinely incomplete coverage rows are reported.
-- Verification: tests, coverage, gap checks, lint, typecheck, and package dry-run pass.
+- Use the shared `@eliware/test` harness for tests and lint checks.
+- Require Node.js 26 and keep the package ESM-only.
+- Run CI on Ubuntu and Windows. Publish only from version tags.
 
-## 1.1.6 — August 6, 2026
+## 1.1.8 — 2026-08-07
 
-- Added preflight validation for Discord webhook payload limits before network requests.
-- Rejects oversized message content, embeds, fields, titles, descriptions, footers, authors, and aggregate embed text.
-- Exported `DISCORD_LIMITS` and `validateWebhookBody()`.
-- Updated README documentation for validation, timeouts, cancellation, thread targeting, and `wait` responses.
-- Expanded TypeScript definitions and validation tests.
-- Verification: tests pass with 100% coverage.
+### Changed
 
-## 1.1.5 — August 6, 2026
+- Align repository layout, scripts, docs, release notes, and package contents with Eliware library conventions.
+- Use native Node.js `fetch` and remove the `node-fetch` runtime dependency.
 
-- Added complete coverage for timeout, cancellation, retry, and HTTP error paths.
-- Improved webhook delivery validation and bounded rate-limit retries.
-- Added request timeout, `AbortSignal`, `wait`, `thread_id`, and `thread_name` support.
-- Expanded TypeScript definitions.
-- Verification: tests pass with 100% coverage; lint passes.
+### Added
 
-## 1.1.4 — August 6, 2026
+- Add TypeScript declaration checks and a runnable example.
 
-- Added manual GitHub Actions workflow dispatch support.
-- Added retry and timeout validation with bounded rate-limit retries.
-- Added request cancellation and detailed Discord response errors.
-- Expanded webhook options and TypeScript definitions.
-- Expanded automated coverage.
+## 1.1.7 — 2026-08-07
 
-## 1.1.3 — August 6, 2026
+### Fixed
 
-- Added the standardized Oxlint command.
-- Updated package metadata and lockfiles for the Node.js 26 workflow conventions.
+- Report only incomplete coverage rows as coverage gaps.
 
-## 1.1.2 — August 6, 2026
+## 1.1.6 — 2026-08-06
 
-- Standardized the Node.js 26 CI workflow.
-- Normalized Jest coverage and gap-testing scripts.
-- Added AgentX artifact ignore rules.
-- Updated dependencies and lockfiles.
+### Added
 
-## 1.1.1 — December 9, 2025
+- Export `DISCORD_LIMITS` and `validateWebhookBody()`.
+- Check Discord message, embed, field, and text limits before each request.
 
-- Initial documented release.
+## 1.1.5 — 2026-08-06
+
+### Added
+
+- Add request timeouts, caller cancellation, thread targeting, and `wait` responses.
+- Add bounded retries for rate limits and detailed HTTP errors.
+
+## 1.1.4 — 2026-08-06
+
+### Added
+
+- Add workflow dispatch, retry and timeout checks, caller cancellation, and response details.
+
+## 1.1.3 — 2026-08-06
+
+### Changed
+
+- Add the standard lint command and Node.js 26 workflow.
+
+## 1.1.2 — 2026-08-06
+
+### Changed
+
+- Standardize the Node.js CI workflow and Jest coverage commands.
+
+## 1.1.1 — 2025-12-09
+
+### Added
+
+- Add the first documented release.

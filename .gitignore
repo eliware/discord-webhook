@@ -137,3 +137,17 @@ dist
 
 # jest
 .agentx*
+
+# Shared repository rules
+.git/
+node_modules/
+coverage/
+dist/
+build/
+generated/
+artifacts/
+test-results/
+.env*
+!.env*.example
+.DS_Store
+Thumbs.db

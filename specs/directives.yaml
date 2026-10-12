@@ -1,0 +1,20 @@
+version: "12.0"
+description: Defines requirements for the Discord webhook library.
+directives:
+  - id: E-201.0
+    dos:
+      - Send messages through the Discord webhook API.
+      - Check message limits before each network request.
+    donts:
+      - Do not expose webhook credentials in source or logs.
+    children:
+      - id: E-201.0.0
+        dos:
+          - Retry HTTP 429 responses within the configured retry limit.
+        donts:
+          - Do not retry other HTTP error responses.
+      - id: E-201.0.1
+        dos:
+          - Accept caller cancellation and a positive request timeout.
+        donts:
+          - Do not send requests when input validation fails.

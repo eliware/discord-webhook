@@ -1,7 +1,8 @@
 # Examples
 
-- [Basic example](basic.mjs)
+- [Webhook request](example.mjs)
 
-This directory contains runnable webhook examples. Each example must use
-placeholder credentials and document prerequisites, command, expected result,
-and cleanup behavior.
+The example needs Node.js 26 and an authorized webhook URL. Set `DISCORD_WEBHOOK` or replace the placeholder URL.
+
+Run `node examples/example.mjs` from the repository root. A successful request sends one message to Discord.
+No cleanup is required.

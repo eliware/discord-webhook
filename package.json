@@ -1,78 +1,111 @@
 {
-    "name": "@eliware/discord-webhook",
-    "type": "module",
-    "version": "2.0.0",
-    "description": "A simple, promise-based Discord webhook sender for Node.js with built-in rate limit handling.",
-    "engines": {
-        "node": ">=26"
-    },
-    "types": "index.d.ts",
-    "files": [
-        "index.mjs",
-        "index.d.ts",
-        "README.md",
-        "LICENSE",
-        "RELEASE_NOTES.md",
-        "examples"
+  "name": "@eliware/discord-webhook",
+  "version": "12.0.0",
+  "type": "module",
+  "description": "A simple, promise-based Discord webhook sender for Node.js with built-in rate limit handling.",
+  "keywords": [
+    "discord",
+    "webhook",
+    "discord-webhook",
+    "nodejs",
+    "rate-limit",
+    "esm",
+    "typescript",
+    "promise",
+    "fetch"
+  ],
+  "private": false,
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "main": "./src/index.mjs",
+  "files": [
+    "src/",
+    "docs/",
+    "README.md",
+    "AGENTS.md",
+    "LICENSE",
+    "RELEASE_NOTES.md",
+    "examples/",
+    "specs/",
+    ".env.example"
+  ],
+  "scripts": {
+    "test": "eliware-test",
+    "lint": "eliware-test --lint",
+    "audit": "eliware-test --audit",
+    "format": "eliware-test --format",
+    "format:check": "eliware-test --format-check",
+    "pack": "eliware-test --pack",
+    "typecheck": "tsc --project tsconfig.json"
+  },
+  "engines": {
+    "node": ">=26"
+  },
+  "devDependencies": {
+    "@eliware/test": "^12.0.0",
+    "typescript": "^7.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.test.mjs"
     ],
-    "publishConfig": {
-        "access": "public"
-    },
-    "exports": {
-        ".": {
-            "import": "./index.mjs",
-            "types": "./index.d.ts"
-        }
-    },
-    "scripts": {
-        "test": "eliware-test",
-        "lint": "eliware-test --lint",
-        "typecheck": "tsc --project tsconfig.json",
-        "audit": "npm audit --omit=dev --audit-level=moderate",
-        "pack": "npm pack --dry-run"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/eliware/discord-webhook.git"
-    },
-    "keywords": [
-        "discord",
-        "webhook",
-        "discord-webhook",
-        "nodejs",
-        "rate-limit",
-        "esm",
-        "typescript",
-        "promise",
-        "fetch"
+    "collectCoverageFrom": [
+      "src/**/*.mjs"
     ],
-    "author": "Eli Sterling, eliware.org <eli@eliware.org>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/eliware/discord-webhook/issues"
-    },
-    "homepage": "https://github.com/eliware/discord-webhook#readme",
-    "devDependencies": {
-        "@eliware/test": "^5.0.0",
-        "typescript": "^7.0.2"
-    },
-    "prettier": {
-      "printWidth": 100,
-      "tabWidth": 2,
-      "useTabs": false,
-      "semi": true,
-      "singleQuote": false,
-      "quoteProps": "as-needed",
-      "jsxSingleQuote": false,
-      "trailingComma": "all",
-      "bracketSpacing": true,
-      "bracketSameLine": false,
-      "arrowParens": "always",
-      "proseWrap": "preserve",
-      "endOfLine": "lf"
-    },
-    "eliware": {
-      "id": "E-201",
-      "apply": ["general", "library", "npm-published"]
+    "coverageReporters": [
+      "text",
+      "json-summary"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
     }
+  },
+  "prettier": {
+    "printWidth": 100,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": false,
+    "quoteProps": "as-needed",
+    "jsxSingleQuote": false,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "always",
+    "proseWrap": "preserve",
+    "endOfLine": "lf"
+  },
+  "author": "Eliware <eliware@eliware.org>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eliware/discord-webhook.git"
+  },
+  "homepage": "https://github.com/eliware/discord-webhook#readme",
+  "bugs": {
+    "url": "https://github.com/eliware/discord-webhook/issues"
+  },
+  "eliware": {
+    "id": "E-201",
+    "apply": [
+      "general",
+      "library",
+      "npm-published"
+    ]
+  },
+  "exports": {
+    ".": {
+      "import": "./src/index.mjs",
+      "types": "./src/index.d.ts"
+    }
+  },
+  "types": "./src/index.d.ts"
 }

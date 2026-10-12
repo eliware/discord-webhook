@@ -1,16 +1,16 @@
-// Example usage for @eliware/discord-webhook v2.0.0
-import { sendMessage } from '@eliware/discord-webhook';
+// Example usage for @eliware/discord-webhook v12.0.0
+import { sendMessage } from "@eliware/discord-webhook";
 
-const url = 'https://discord.com/api/webhooks/your-webhook-id/your-webhook-token';
-const body = { content: 'Hello from discord-webhook!' };
+const url = "https://discord.com/api/webhooks/your-webhook-id/your-webhook-token";
+const body = { content: "Hello from discord-webhook!" };
 
 try {
-    const response = await sendMessage({ url, body });
-    if (response.ok) {
-        console.log('Message sent successfully!');
-    } else {
-        console.error('Failed to send message:', response.status, await response.text());
-    }
+  const response = await sendMessage({ url, body });
+  if (response.ok) {
+    console.log("Message sent successfully!");
+  } else {
+    console.error("Failed to send message:", response.status, await response.text());
+  }
 } catch (err) {
-    console.error('Error sending message:', err);
+  console.error("Error sending message:", err);
 }
