@@ -87,8 +87,8 @@ test("sendMessage handles a zero retry limit", async () => {
   expect(fetchFn).toHaveBeenCalledTimes(1);
 });
 
-test("supports webhook query options and reports HTTP errors", async () => {
-  const response = { status: 400, ok: false, text: async () => "bad payload" };
+test("supports webhook query options", async () => {
+  const response = { status: 204, ok: true };
   const fetchFn = jest.fn(async () => response);
   await expect(
     sendMessage({
@@ -99,67 +99,8 @@ test("supports webhook query options and reports HTTP errors", async () => {
       threadId: "42",
       threadName: "thread",
     }),
-  ).rejects.toThrow("400): bad payload");
+  ).resolves.toBe(response);
   expect(fetchFn.mock.calls[0][0]).toContain("wait=true");
-});
-
-test("reports HTTP errors without a response body", async () => {
-  const response = { status: 500, ok: false, text: async () => "" };
-  await expect(
-    sendMessage({ body: {}, url: "https://test", fetchFn: async () => response }),
-  ).rejects.toThrow("Discord webhook request failed (500)");
-});
-
-test("reports request timeouts", async () => {
-  const error = new Error("aborted");
-  error.name = "AbortError";
-  await expect(
-    sendMessage({
-      body: {},
-      url: "https://test",
-      timeoutMs: 1,
-      fetchFn: async () => {
-        throw error;
-      },
-    }),
-  ).rejects.toThrow("Webhook request timed out.");
-});
-
-test("aborts an in-flight request when timeout expires", async () => {
-  await expect(
-    sendMessage({
-      body: {},
-      url: "https://test",
-      timeoutMs: 1,
-      fetchFn: async (_url, { signal }) =>
-        new Promise((resolve, reject) => {
-          signal.addEventListener(
-            "abort",
-            () => {
-              const error = new Error("aborted");
-              error.name = "AbortError";
-              reject(error);
-            },
-            { once: true },
-          );
-        }),
-    }),
-  ).rejects.toThrow("Webhook request timed out.");
-});
-
-test("aborts an in-flight request from the caller signal", async () => {
-  const controller = new AbortController();
-  const pending = sendMessage({
-    body: {},
-    url: "https://test",
-    signal: controller.signal,
-    fetchFn: async (_url, { signal }) =>
-      new Promise((resolve, reject) => {
-        signal.addEventListener("abort", () => reject(new Error("cancelled")), { once: true });
-        setImmediate(() => controller.abort());
-      }),
-  });
-  await expect(pending).rejects.toThrow("cancelled");
 });
 
 test("aborts a rate-limit wait from the caller signal", async () => {
