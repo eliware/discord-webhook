@@ -7,6 +7,7 @@
 - Add repository metadata with ID `E-201`.
 - Add end user guides for setup, API options, payload limits, security, and common errors.
 - Add examples, specifications, and shared CI and publish workflows.
+- Split request transport, response handling, and retry coordination into focused modules.
 
 ### Changed
 
@@ -18,6 +19,13 @@
 - Set the knit checkout path to `/eliware/discord-webhook`.
 - Include docs, examples, specifications, and repository guidance in the package.
 - Set the license copyright year to 2026.
+
+### Fixed
+
+- Reject webhook URLs that do not use HTTP or HTTPS.
+- Remove abort listeners after retry waits.
+- Reject arrays where Discord expects embed fields.
+- Stop response body reads when the caller aborts.
 
 ## 2.0.0 — 2026-08-25
 
