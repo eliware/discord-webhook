@@ -43,7 +43,7 @@ function validateFields(fields, index, check) {
     throw new Error(`Discord embed ${index + 1} supports at most ${DISCORD_LIMITS.fields} fields.`);
   }
   for (const [fieldIndex, field] of fields.entries()) {
-    if (!field || typeof field !== "object") {
+    if (!field || typeof field !== "object" || Array.isArray(field)) {
       throw new Error(`Discord embed ${index + 1} field ${fieldIndex + 1} must be an object.`);
     }
     check(field.name, DISCORD_LIMITS.fieldName, `field ${fieldIndex + 1} name`);

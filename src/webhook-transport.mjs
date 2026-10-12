@@ -12,9 +12,11 @@ export async function requestOnce(target, { body, fetchFn, timeoutMs, signal }) 
       body: JSON.stringify(body),
       signal: controller.signal,
     });
-    return await readResponse(response, timeoutMs);
+    return await readResponse(response, timeoutMs, controller.signal);
   } catch (error) {
-    if (error?.name === "AbortError") throw new Error("Webhook request timed out.");
+    if (error?.name === "AbortError") {
+      throw new Error(signal?.aborted ? "Webhook request aborted." : "Webhook request timed out.");
+    }
     throw error;
   } finally {
     clearTimeout(timer);

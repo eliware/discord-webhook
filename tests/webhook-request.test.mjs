@@ -42,6 +42,7 @@ test("throws after the retry limit", async () => {
 
 test("cancels a rate limit wait when the caller signal aborts", async () => {
   const controller = new AbortController();
+  const removeListener = jest.spyOn(controller.signal, "removeEventListener");
   const pending = requestWithRetries(new URL("https://example.com"), {
     body: {},
     maxRetries: 1,
@@ -51,4 +52,19 @@ test("cancels a rate limit wait when the caller signal aborts", async () => {
   });
   setImmediate(() => controller.abort());
   await expect(pending).rejects.toThrow("Webhook request aborted.");
+  expect(removeListener).toHaveBeenCalledWith("abort", expect.any(Function));
+});
+
+test("rejects a rate limit wait when its caller signal is already aborted", async () => {
+  const controller = new AbortController();
+  controller.abort();
+  await expect(
+    requestWithRetries(new URL("https://example.com"), {
+      body: {},
+      maxRetries: 1,
+      signal: controller.signal,
+      fetchFn: async () => ({ status: 429, headers: { get: () => "1" } }),
+      timeoutMs: 1000,
+    }),
+  ).rejects.toThrow("Webhook request aborted.");
 });

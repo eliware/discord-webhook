@@ -61,3 +61,15 @@ test("aborts an in-flight request from the caller signal", async () => {
   });
   await expect(pending).rejects.toThrow("cancelled");
 });
+
+test("aborts an in-flight response body read from the caller signal", async () => {
+  const controller = new AbortController();
+  const pending = requestOnce(new URL("https://example.com"), {
+    body: {},
+    signal: controller.signal,
+    fetchFn: async () => ({ status: 400, ok: false, text: () => new Promise(() => {}) }),
+    timeoutMs: 1000,
+  });
+  setImmediate(() => controller.abort());
+  await expect(pending).rejects.toThrow("Webhook request aborted.");
+});

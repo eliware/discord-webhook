@@ -34,3 +34,24 @@ test("reports an HTTP error without a response body", async () => {
     "Discord webhook request failed (500)",
   );
 });
+
+test("rejects response body reads when the signal is already aborted", async () => {
+  const controller = new AbortController();
+  controller.abort();
+  const response = { status: 400, ok: false, text: async () => "bad payload" };
+  await expect(readResponse(response, 1000, controller.signal)).rejects.toThrow("Request aborted.");
+});
+
+test("reports an HTTP error when response body reading fails", async () => {
+  const controller = new AbortController();
+  const response = {
+    status: 400,
+    ok: false,
+    text: async () => {
+      throw new Error("body read failed");
+    },
+  };
+  await expect(readResponse(response, 1000, controller.signal)).rejects.toThrow(
+    "Discord webhook request failed (400)",
+  );
+});

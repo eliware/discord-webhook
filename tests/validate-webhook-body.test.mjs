@@ -45,6 +45,15 @@ test("rejects malformed embeds and field values", () => {
   expect(() => validateWebhookBody({ embeds: [{ fields: [null] }] })).toThrow(
     /field 1 must be an object/,
   );
+  const fieldArray = [];
+  Object.defineProperty(fieldArray, "name", {
+    get() {
+      throw new Error("field getter must not run");
+    },
+  });
+  expect(() => validateWebhookBody({ embeds: [{ fields: [fieldArray] }] })).toThrow(
+    /field 1 must be an object/,
+  );
   expect(() =>
     validateWebhookBody({ embeds: [{ fields: [{ name: "x".repeat(257), value: "ok" }] }] }),
   ).toThrow(/field 1 name exceeds 256/);

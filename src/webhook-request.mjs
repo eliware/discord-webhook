@@ -14,14 +14,20 @@ export async function requestWithRetries(target, options) {
 
 function waitForRetry(waitMs, signal) {
   return new Promise((resolve, reject) => {
-    const timerId = setTimeout(resolve, waitMs);
-    signal?.addEventListener(
-      "abort",
-      () => {
-        clearTimeout(timerId);
-        reject(new Error("Webhook request aborted."));
-      },
-      { once: true },
-    );
+    let timerId;
+    const cleanup = () => {
+      clearTimeout(timerId);
+      signal?.removeEventListener("abort", onAbort);
+    };
+    const onAbort = () => {
+      cleanup();
+      reject(new Error("Webhook request aborted."));
+    };
+    timerId = setTimeout(() => {
+      cleanup();
+      resolve();
+    }, waitMs);
+    signal?.addEventListener("abort", onAbort, { once: true });
+    if (signal?.aborted) onAbort();
   });
 }

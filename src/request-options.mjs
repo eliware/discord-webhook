@@ -3,7 +3,10 @@ const MAX_RETRIES = 10;
 export function validateOptions({ body, url, maxRetries, timeoutMs, signal }) {
   if (!url || typeof url !== "string") throw new Error("A valid webhook URL is required.");
   try {
-    new URL(url);
+    const target = new URL(url);
+    if (target.protocol !== "https:" && target.protocol !== "http:") {
+      throw new Error("Unsupported webhook URL scheme.");
+    }
   } catch {
     throw new Error("A valid webhook URL is required.");
   }
