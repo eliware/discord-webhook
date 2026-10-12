@@ -2,10 +2,22 @@
 
 ## 12.0.0 — 2026-10-12
 
+### Added
+
+- Add repository metadata with ID `E-201`.
+- Add end user guides for setup, API options, payload limits, security, and common errors.
+- Add examples, specifications, and shared CI and publish workflows.
+
 ### Changed
 
-- Align package metadata, source layout, documentation, and workflows with shared conventions.
-- Preserve the webhook API, rate-limit retries, cancellation, and payload checks.
+- Move runtime code and type declarations into `src/`.
+- Use canonical package metadata, scripts, and Prettier settings.
+- Use the shared `@eliware/test` v12 harness.
+- Keep the existing API, retry rules, cancellation, and payload checks.
+- Rewrite repository guidance and user docs in clear, direct English.
+- Set the knit checkout path to `/eliware/discord-webhook`.
+- Include docs, examples, specifications, and repository guidance in the package.
+- Set the license copyright year to 2026.
 
 ## 2.0.0 — 2026-08-25
 
@@ -43,14 +55,14 @@
 
 ### Added
 
-- Add request timeouts, caller cancellation, thread targeting, and `wait` responses.
-- Add bounded retries for rate limits and detailed HTTP errors.
+- Add request time limits, caller cancellation, thread options, and `wait` responses.
+- Add bounded rate limit retries and detailed HTTP errors.
 
 ## 1.1.4 — 2026-08-06
 
 ### Added
 
-- Add workflow dispatch, retry and timeout checks, caller cancellation, and response details.
+- Add workflow dispatch, retry and time limit checks, caller cancellation, and response details.
 
 ## 1.1.3 — 2026-08-06
 

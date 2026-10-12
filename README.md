@@ -23,94 +23,49 @@ A simple, promise-based Discord webhook sender for Node.js with built-in rate li
 
 ## Features
 
-- Send a JSON message to a Discord webhook.
-- Retry HTTP 429 responses up to the set retry count.
-- Check Discord message and embed limits before each request.
-- Set a request timeout or pass an `AbortSignal`.
-- Send a message to a thread or request its response.
+- Send Discord webhook messages as JSON.
+- Retry rate limit responses.
+- Check message and embed limits before each request.
 
 ## Requirements
 
-- Node.js 26 or newer.
-- Native ESM support and the built-in `fetch` function.
+Use Node.js 26 or later. This package uses native ESM.
 
 ## Setup
 
-Install the package:
-
-```bash
-npm install @eliware/discord-webhook
-```
-
-Set `DISCORD_WEBHOOK` or pass the webhook URL to `sendMessage`. Use only a placeholder URL in configuration files.
+Run `npm install @eliware/discord-webhook`. Set `DISCORD_WEBHOOK` to your private webhook URL.
 
 ## Usage
 
-```js
-import { sendMessage } from "@eliware/discord-webhook";
-
-const response = await sendMessage({
-  body: { content: "Hello from Node.js!" },
-  url: process.env.DISCORD_WEBHOOK,
-});
-
-if (!response.ok) {
-  throw new Error(`Discord returned HTTP ${response.status}`);
-}
-```
-
-See [usage details](docs/usage.md) and [release notes](RELEASE_NOTES.md).
+Read the [usage guide](docs/usage.md) for setup, options, limits, and errors. Read [release notes](RELEASE_NOTES.md) for changes.
 
 ## Development
 
-Use Node.js 26 or newer. Run commands from the repository root.
+Read [AGENTS.md](AGENTS.md) before you change this repository.
 
 ## Testing
 
-Run the aggregate checks:
-
-```bash
-npm test
-npm run lint
-npm run format:check
-npm run audit
-npm run typecheck
-npm run pack
-```
+Run `npm test`.
 
 ## Troubleshooting
 
-Check the webhook URL and its permissions. Read the [troubleshooting guide](docs/troubleshooting.md) for error details.
+Read the [troubleshooting guide](docs/troubleshooting.md).
 
 ## Security
 
-Treat webhook URLs as credentials. Store them in a secret store or in `DISCORD_WEBHOOK`. Do not commit real URLs or log credentials.
+Keep webhook URLs private. Do not commit URLs or print them in logs.
 
 ## API
 
-`sendMessage` accepts a message body and these optional settings:
-
-- `url`: webhook URL. Defaults to `DISCORD_WEBHOOK`.
-- `maxRetries`: retry count for HTTP 429 responses. Defaults to `3`. The maximum is `10`.
-- `fetchFn`: request function. Defaults to the built-in `fetch` function.
-- `timeoutMs`: request timeout in milliseconds. Defaults to `30000`.
-- `signal`: `AbortSignal` for caller cancellation.
-- `wait`: request the created message in the response.
-- `threadId` and `threadName`: select a Discord thread.
-
-The call returns the `Response` from `fetch`. It throws an `Error` for invalid input, failed requests, timeouts, cancellation, or exhausted retries.
-
-`validateWebhookBody(body)` checks Discord limits before a request. `DISCORD_LIMITS` exports the supported limits.
+Read the [documentation index](docs/README.md) and [usage guide](docs/usage.md) for API details. Read [specifications](specs/README.md) for package requirements.
 
 ## Packaging
 
-The package includes runtime modules, TypeScript declarations, documentation, examples, and specifications. Run `npm run pack` to check package contents.
-
-Read the [specification index](specs/README.md), [documentation index](docs/README.md), and [example index](examples/README.md).
+Run `npm run pack` to check package contents.
 
 ## Examples
 
-Use the [basic example](examples/example.mjs). It uses placeholder credentials and a message body.
+Read the [examples index](examples/README.md).
 
 ## Support
 

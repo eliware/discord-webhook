@@ -2,43 +2,42 @@
 
 ## Project
 
-Build a Discord webhook library with Node.js 26 and native ESM.
+Build `@eliware/discord-webhook` with Node.js 26 and native ESM.
 
 ## Scope and boundaries
 
-This repository owns the webhook library and its public package. Keep credentials out of source files and logs.
+Keep changes within this repository. Keep the public API and Discord payload limits.
 
 ## Layout
 
-Keep runtime modules and declarations under `src/`. Mirror each runtime module with one test under `tests/`.
-Keep user guides under `docs/`, examples under `examples/`, and specifications under `specs/`.
+- Put runtime code in `src/`.
+- Put tests in `tests/` and mirror source file names.
+- Put user guides in `docs/`.
 
 ## Development
 
-Use Node.js 26 and npm 12 or newer. Keep each source and test module focused. Preserve the public API and Discord limits.
+Use native Node.js APIs. Keep TypeScript declarations in sync with the public API.
 
 ## Validation
 
-Run `npm test` for aggregate validation.
-Run `npm run lint` for lint checks.
-Run `npm run audit` for dependency audit checks.
-Run `npm run format` to format files.
-Run `npm run format:check` to check file format.
-Run `npm run pack` to check package contents.
-Run `npm run typecheck` to check TypeScript declarations.
+- Run `npm test`.
+- Run `npm run lint`.
+- Run `npm run audit`.
+- Run `npm run format` and `npm run format:check`.
+- Run `npm run typecheck` and `npm run pack`.
 
 ## Security
 
-Protect webhook URLs as credentials. Use placeholders in examples. Do not commit real URLs or tokens.
+Keep webhook URLs and tokens secret. Do not add credentials to code, logs, or docs.
 
 ## Changes
 
-Keep docs, examples, tests, and specifications aligned with the public API. Do not deploy or publish without release authorization.
+Do not publish or deploy without user authorization.
 
 ## Library
 
-Keep the package ESM-only. Export only supported API items from `src/index.mjs`.
+Export the public API from `src/index.mjs`. Keep its type declarations in `src/index.d.ts`.
 
 ## npm publication
 
-Keep the package public. Use the shared package check before publication. Follow the approved release process.
+Keep package files and metadata correct. Run `npm run pack` before publication.
