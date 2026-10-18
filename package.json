@@ -1,6 +1,6 @@
 {
   "name": "@eliware/discord-webhook",
-  "version": "12.0.0",
+  "version": "13.0.0",
   "type": "module",
   "description": "A simple, promise-based Discord webhook sender for Node.js with built-in rate limit handling.",
   "keywords": [

@@ -1,4 +1,4 @@
-import { requestOnce } from "./webhook-transport.mjs";
+import { requestOnce } from "./transport.mjs";
 
 export async function requestWithRetries(target, options) {
   let attempt = 0;
@@ -9,7 +9,7 @@ export async function requestWithRetries(target, options) {
     await waitForRetry(result.retryAfter, options.signal);
     attempt++;
   }
-  throw new Error("Rate limited: max retries exceeded");
+  throw new Error("Rate limit retry count exceeded.");
 }
 
 function waitForRetry(waitMs, signal) {

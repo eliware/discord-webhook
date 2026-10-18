@@ -8,7 +8,7 @@ Use Node.js 26 or later. This package uses native ESM and the built-in `fetch` A
 
 Run `npm install @eliware/discord-webhook` in your project.
 
-Set `DISCORD_WEBHOOK` to your Discord webhook URL. Keep this URL secret. You can pass the URL with the `url` option instead.
+Set `DISCORD_WEBHOOK` to your Discord webhook URL. Keep this URL secret. You can also pass the URL with the `url` option.
 
 ## Send a message
 
@@ -25,7 +25,7 @@ if (!response.ok) {
 }
 ```
 
-`sendMessage` returns the successful native `Response` object. The request sends a JSON body with the `Content-Type: application/json` header.
+`sendMessage` returns the native `Response` object when the request succeeds. The request sends JSON with the `Content-Type: application/json` header.
 
 ## Options
 
@@ -49,29 +49,29 @@ The `wait`, `threadId`, and `threadName` values become URL query values. The pac
 
 `validateWebhookBody(body)` checks these Discord limits before a request. It returns `true` when the payload passes.
 
-| Message part         |          Maximum |
-| -------------------- | ---------------: |
-| Message content      | 2,000 characters |
-| Embeds per message   |               10 |
-| Embed title          |   256 characters |
-| Embed description    | 4,096 characters |
-| Embed footer text    | 2,048 characters |
-| Embed author name    |   256 characters |
-| Fields per embed     |               25 |
-| Field name           |   256 characters |
-| Field value          | 1,024 characters |
-| Total text per embed | 6,000 characters |
+| Message field             |          Maximum |
+| ------------------------- | ---------------: |
+| Message content           | 2,000 characters |
+| Embeds for each message   |               10 |
+| Embed title               |   256 characters |
+| Embed description         | 4,096 characters |
+| Embed footer text         | 2,048 characters |
+| Embed author name         |   256 characters |
+| Fields for each embed     |               25 |
+| Field name                |   256 characters |
+| Field value               | 1,024 characters |
+| Total text for each embed | 6,000 characters |
 
 The validator checks embed objects and field objects. It checks string values for the listed text limits.
 
 ## Retries and errors
 
-The package retries HTTP 429 responses up to `maxRetries` times. It reads the `retry-after` response header as seconds. It caps each wait at `timeoutMs`.
+The package retries HTTP 429 responses no more than `maxRetries` times. It reads the `retry-after` response header as seconds. It caps each wait at `timeoutMs`.
 
-If the header is missing or invalid, the package waits one second. After the last retry, the package throws `Rate limited: max retries exceeded`.
+If the header is missing or invalid, the package waits one second. After the last retry, the package throws `Rate limit retry count exceeded.`
 
-For other unsuccessful HTTP responses, the package throws an error with the status code and response text, when available. A request timeout throws `Webhook request timed out.` A pre-aborted signal throws `Webhook request aborted.`
+For other failed HTTP responses, the package throws an error with the status code and response text, when available. A request timeout throws `Webhook request timed out.` A pre-aborted signal throws `Webhook request aborted.`
 
 ## Security
 
-Store the webhook URL in an environment variable or a secret store. Do not place it in source files, commits, logs, or support messages.
+Store the webhook URL in an environment variable or a secret store. Do not put it in source files, commits, logs, or support messages.

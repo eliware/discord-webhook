@@ -1,5 +1,5 @@
 import { expect, test } from "@jest/globals";
-import { readResponse } from "../src/webhook-response.mjs";
+import { readResponse } from "../../src/webhook/response.mjs";
 
 test("returns a successful response without retry", async () => {
   const response = { status: 204, ok: true };

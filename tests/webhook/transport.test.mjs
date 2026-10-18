@@ -1,5 +1,8 @@
-import { expect, test } from "@jest/globals";
-import { requestOnce } from "../src/webhook-transport.mjs";
+import { afterEach, beforeEach, expect, jest, test } from "@jest/globals";
+import { requestOnce } from "../../src/webhook/transport.mjs";
+
+beforeEach(() => jest.useFakeTimers());
+afterEach(() => jest.useRealTimers());
 
 test("sends a JSON request and returns its response result", async () => {
   const response = { status: 204, ok: true };
@@ -27,24 +30,25 @@ test("maps an abort error to the timeout error", async () => {
 });
 
 test("aborts an in-flight request when its timeout expires", async () => {
-  await expect(
-    requestOnce(new URL("https://example.com"), {
-      body: {},
-      timeoutMs: 1,
-      fetchFn: async (_url, { signal }) =>
-        new Promise((resolve, reject) => {
-          signal.addEventListener(
-            "abort",
-            () => {
-              const error = new Error("aborted");
-              error.name = "AbortError";
-              reject(error);
-            },
-            { once: true },
-          );
-        }),
-    }),
-  ).rejects.toThrow("Webhook request timed out.");
+  const pending = requestOnce(new URL("https://example.com"), {
+    body: {},
+    timeoutMs: 1,
+    fetchFn: async (_url, { signal }) =>
+      new Promise((resolve, reject) => {
+        signal.addEventListener(
+          "abort",
+          () => {
+            const error = new Error("aborted");
+            error.name = "AbortError";
+            reject(error);
+          },
+          { once: true },
+        );
+      }),
+  });
+  const assertion = expect(pending).rejects.toThrow("Webhook request timed out.");
+  await jest.advanceTimersByTimeAsync(1);
+  await assertion;
 });
 
 test("aborts an in-flight request from the caller signal", async () => {
@@ -55,11 +59,13 @@ test("aborts an in-flight request from the caller signal", async () => {
     fetchFn: async (_url, { signal }) =>
       new Promise((resolve, reject) => {
         signal.addEventListener("abort", () => reject(new Error("cancelled")), { once: true });
-        setImmediate(() => controller.abort());
+        setTimeout(() => controller.abort(), 1);
       }),
     timeoutMs: 1000,
   });
-  await expect(pending).rejects.toThrow("cancelled");
+  const assertion = expect(pending).rejects.toThrow("cancelled");
+  await jest.advanceTimersByTimeAsync(1);
+  await assertion;
 });
 
 test("aborts an in-flight response body read from the caller signal", async () => {
@@ -70,6 +76,8 @@ test("aborts an in-flight response body read from the caller signal", async () =
     fetchFn: async () => ({ status: 400, ok: false, text: () => new Promise(() => {}) }),
     timeoutMs: 1000,
   });
-  setImmediate(() => controller.abort());
-  await expect(pending).rejects.toThrow("Webhook request aborted.");
+  const assertion = expect(pending).rejects.toThrow("Webhook request aborted.");
+  setTimeout(() => controller.abort(), 1);
+  await jest.advanceTimersByTimeAsync(1);
+  await assertion;
 });

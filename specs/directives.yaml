@@ -1,4 +1,4 @@
-version: "12.0"
+version: "13.0"
 description: Defines requirements for the Discord webhook library.
 directives:
   - id: E-201.0
@@ -10,7 +10,7 @@ directives:
     children:
       - id: E-201.0.0
         dos:
-          - Retry HTTP 429 responses within the configured retry limit.
+          - Do not retry HTTP errors other than 429.
         donts:
           - Do not retry other HTTP error responses.
       - id: E-201.0.1

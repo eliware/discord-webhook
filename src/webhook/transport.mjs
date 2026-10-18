@@ -1,4 +1,4 @@
-import { readResponse } from "./webhook-response.mjs";
+import { readResponse } from "./response.mjs";
 
 export async function requestOnce(target, { body, fetchFn, timeoutMs, signal }) {
   const controller = new AbortController();

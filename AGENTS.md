@@ -6,7 +6,7 @@ Build `@eliware/discord-webhook` with Node.js 26 and native ESM.
 
 ## Scope and boundaries
 
-Keep changes within this repository. Keep the public API and Discord payload limits.
+Keep changes in this repository. Keep the public API and Discord payload limits.
 
 ## Layout
 
@@ -23,8 +23,10 @@ Use native Node.js APIs. Keep TypeScript declarations in sync with the public AP
 - Run `npm test`.
 - Run `npm run lint`.
 - Run `npm run audit`.
-- Run `npm run format` and `npm run format:check`.
-- Run `npm run typecheck` and `npm run pack`.
+- Run `npm run format`.
+- Run `npm run format:check`.
+- Run `npm run typecheck`.
+- Run `npm run pack`.
 
 ## Security
 
@@ -37,6 +39,12 @@ Do not publish or deploy without user authorization.
 ## Library
 
 Export the public API from `src/index.mjs`. Keep its type declarations in `src/index.d.ts`.
+
+Run focused tests first during development.
+Run one test file with `npm test -- tests/path/to/example.test.mjs`.
+Run multiple test files with `npm test -- tests/path/to/first.test.mjs tests/path/to/second.test.mjs`.
+Prevent repeated full-suite runs during development.
+Run the full `npm test` suite for final validation before a commit, milestone, or release.
 
 ## npm publication
 

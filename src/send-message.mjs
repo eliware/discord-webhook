@@ -1,5 +1,5 @@
 import { validateWebhookBody } from "./validate-webhook-body.mjs";
-import { requestWithRetries } from "./webhook-request.mjs";
+import { requestWithRetries } from "./webhook/request.mjs";
 import { addQueryOptions, validateOptions } from "./request-options.mjs";
 
 const DEFAULT_TIMEOUT = 30_000;
