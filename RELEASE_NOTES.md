@@ -2,6 +2,14 @@
 
 ## 13.0.0 — 2026-10-17
 
+### Added
+
+- Retry HTTP 429 responses after Discord's interval, with no more than `maxRetries` retries.
+- Set a timeout for each request and cancel requests or retry waits with an `AbortSignal`.
+- Validate message content, embed, and field shapes and text limits before each request.
+- Set `threadId` to target an existing forum or media channel discussion.
+- Set `threadName` to create a forum or media channel discussion.
+
 ### Changed
 
 - Update package metadata and validation for Convention v13.

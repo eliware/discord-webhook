@@ -88,7 +88,11 @@ The function returns `true` when the checks pass. It throws an `Error` when a ch
 
 The local check counts JavaScript string length. It does not remove spaces at the start or end.
 Discord removes leading and trailing whitespace when it checks embed text limits.
-The local check validates listed text limits and basic embed and field object shapes. It does not validate every Discord field.
+
+The local check requires a string for `content` when you include it.
+It requires arrays for `embeds` and `fields` when you include them.
+It checks embed and field object shapes, listed text limits, and supported string values.
+It does not validate every Discord field.
 Discord requires at least one supported message field, such as `content`, `embeds`, `components`, or `poll`.
 
 `DISCORD_LIMITS` exports a frozen object with the supported limit values.

@@ -24,6 +24,27 @@ test("rejects payloads that exceed Discord limits", () => {
   );
 });
 
+test("rejects content that is not a string", () => {
+  for (const content of [42, null, {}]) {
+    expect(() => validateWebhookBody({ content })).toThrow(
+      "Discord webhook content must be a string.",
+    );
+  }
+});
+
+test("rejects embeds and fields that are not arrays", () => {
+  for (const embeds of [{}, "invalid", null]) {
+    expect(() => validateWebhookBody({ embeds })).toThrow(
+      "Discord webhook embeds must be an array.",
+    );
+  }
+  for (const fields of [{}, "invalid", null]) {
+    expect(() => validateWebhookBody({ embeds: [{ fields }] })).toThrow(
+      "Discord embed 1 fields must be an array.",
+    );
+  }
+});
+
 test("rejects too many embeds, fields, and total embed text", () => {
   expect(() => validateWebhookBody({ embeds: Array.from({ length: 11 }, () => ({})) })).toThrow(
     /at most 10 embeds/,

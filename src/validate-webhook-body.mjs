@@ -4,10 +4,16 @@ const stringLength = (value) => (typeof value === "string" ? value.length : 0);
 
 /** Validate payloads against Discord limits before making a network request. */
 export function validateWebhookBody(body) {
-  if (typeof body.content === "string" && body.content.length > DISCORD_LIMITS.content) {
+  if (body.content !== undefined && typeof body.content !== "string") {
+    throw new Error("Discord webhook content must be a string.");
+  }
+  if (body.content !== undefined && body.content.length > DISCORD_LIMITS.content) {
     throw new Error(`Discord webhook content exceeds ${DISCORD_LIMITS.content} characters.`);
   }
-  if (!Array.isArray(body.embeds)) return true;
+  if (body.embeds === undefined) return true;
+  if (!Array.isArray(body.embeds)) {
+    throw new Error("Discord webhook embeds must be an array.");
+  }
   if (body.embeds.length > DISCORD_LIMITS.embeds) {
     throw new Error(`Discord webhook supports at most ${DISCORD_LIMITS.embeds} embeds.`);
   }
@@ -52,7 +58,10 @@ function validateOptionalObject(value, index, name) {
 }
 
 function validateFields(fields, index, check) {
-  if (!Array.isArray(fields)) return;
+  if (fields === undefined) return;
+  if (!Array.isArray(fields)) {
+    throw new Error(`Discord embed ${index + 1} fields must be an array.`);
+  }
   if (fields.length > DISCORD_LIMITS.fields) {
     throw new Error(`Discord embed ${index + 1} supports at most ${DISCORD_LIMITS.fields} fields.`);
   }
