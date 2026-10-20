@@ -1,23 +1,29 @@
 # Release Notes
 
-## 13.0.0 — 2026-10-17
+## 13.0.0 — 2026-10-19
 
 ### Added
 
-- Retry HTTP 429 responses after Discord's interval, with no more than `maxRetries` retries.
-- Set a timeout for each request and cancel requests or retry waits with an `AbortSignal`.
-- Validate message content, embed, and field shapes and text limits before each request.
-- Set `threadId` to target an existing forum or media channel discussion.
-- Set `threadName` to create a forum or media channel discussion.
+- Reject empty message bodies before a network request.
+- Validate content types, embed and field shapes, and Discord text limits before each request.
+- Check combined embed text across the full message.
+- Retry only HTTP 429 responses, with `maxRetries` retries at most.
+- Document setup, options, payload checks, rate limits, timeouts, cancellation, and common errors.
+- Add a runnable example for the current package version.
 
 ### Changed
 
-- Update package metadata and validation for Convention v13.
-- Group webhook transport modules under `src/webhook/` and matching test paths.
-- Convention v13 defines the repository rules.
-- Use the canonical npm publication workflow.
+- Move `threadName` into the JSON body as `thread_name`. Keep `threadId` in the `thread_id` query value.
+- Honor Discord's full rate-limit interval when it exceeds `timeoutMs`.
+- Keep request timeouts active while the package reads rate-limit and HTTP error bodies.
+- Return `Rate limit retry count exceeded.` when the package reaches the retry limit.
+- Set the package and specification version to 13.0.0 and use `@eliware/test` v13.
+- Group request, response, and transport code under `src/webhook/` with matching tests.
+- Use the canonical npm workflow. Validate version tags before publication and publish with provenance.
+- Use checkout v7 and full Git history in validation workflows.
+- Use `git pull` in the Knit deployment workflow.
 - Use the complete Discord webhook route in `.env.example`.
-- Change the retry limit error text.
+- Align repository guidance, the README, user guides, and example with the current package behavior.
 
 ## 12.0.0 — 2026-10-12
 
