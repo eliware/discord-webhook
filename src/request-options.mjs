@@ -4,7 +4,7 @@ export function validateOptions({ body, url, maxRetries, timeoutMs, signal }) {
   if (!url || typeof url !== "string") throw new Error("A valid webhook URL is required.");
   try {
     const target = new URL(url);
-    if (target.protocol !== "https:" && target.protocol !== "http:") {
+    if (target.protocol !== "https:") {
       throw new Error("Unsupported webhook URL scheme.");
     }
   } catch {

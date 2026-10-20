@@ -8,7 +8,14 @@ test("accepts valid request options", () => {
 });
 
 test("rejects invalid URLs and message bodies", () => {
-  for (const url of [undefined, 123, "bad", "file:///tmp/webhook", "ftp://example.com"]) {
+  for (const url of [
+    undefined,
+    123,
+    "bad",
+    "http://example.com",
+    "file:///tmp/webhook",
+    "ftp://example.com",
+  ]) {
     expect(() => validateOptions({ ...validOptions, url })).toThrow("valid webhook URL");
   }
   for (const body of [undefined, null, "text", []]) {

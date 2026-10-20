@@ -11,6 +11,11 @@
 - Document setup, options, payload checks, rate limits, timeouts, cancellation, and common errors.
 - Add a runnable example for the current package version.
 
+### Fixed
+
+- Require HTTPS for webhook URLs because each URL contains a secret token.
+- Require the options argument in the TypeScript declaration for `sendMessage`.
+
 ### Changed
 
 - Move `threadName` into the JSON body as `thread_name`. Keep `threadId` in the `thread_id` query value.

@@ -17,7 +17,7 @@ function createMockFetch(responses) {
 test("sendMessage sends successfully on first try", async () => {
   const mockResponse = { status: 204, ok: true, headers: { get: () => null } };
   const fetchFn = createMockFetch([mockResponse]);
-  const res = await sendMessage({ body: { content: "hi" }, url: "http://test", fetchFn });
+  const res = await sendMessage({ body: { content: "hi" }, url: "https://test", fetchFn });
   expect(res).toBe(mockResponse);
 });
 
@@ -31,7 +31,7 @@ test("sendMessage retries on rate limit and succeeds", async () => {
   const fetchFn = createMockFetch([rateLimitResponse, successResponse]);
   const pending = sendMessage({
     body: { content: "hi" },
-    url: "http://test",
+    url: "https://test",
     fetchFn,
     maxRetries: 2,
   });
@@ -54,7 +54,7 @@ test("sendMessage throws after exceeding max retries", async () => {
   ]);
   const pending = sendMessage({
     body: { content: "hi" },
-    url: "http://test",
+    url: "https://test",
     fetchFn,
     maxRetries: 2,
   });
@@ -69,7 +69,7 @@ test("sendMessage rejects missing or invalid URL", async () => {
 
 test("sendMessage uses environment URL and retries with default delay for invalid retry-after", async () => {
   const previousWebhook = process.env.DISCORD_WEBHOOK;
-  process.env.DISCORD_WEBHOOK = "http://env-test";
+  process.env.DISCORD_WEBHOOK = "https://env-test";
   const rateLimitResponse = { status: 429, headers: { get: () => "invalid" } };
   const successResponse = { status: 200 };
   const fetchFn = createMockFetch([rateLimitResponse, successResponse]);
@@ -77,7 +77,7 @@ test("sendMessage uses environment URL and retries with default delay for invali
   const pending = sendMessage({ body: { content: "hi" }, fetchFn, maxRetries: 1 });
   await jest.advanceTimersByTimeAsync(1000);
   await expect(pending).resolves.toBe(successResponse);
-  expect(fetchFn).toHaveBeenCalledWith("http://env-test/", expect.any(Object));
+  expect(fetchFn).toHaveBeenCalledWith("https://env-test/", expect.any(Object));
   expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 1000);
 
   setTimeoutSpy.mockRestore();
@@ -89,7 +89,7 @@ test("sendMessage handles a zero retry limit", async () => {
   const rateLimitResponse = { status: 429, headers: { get: () => "0" } };
   const fetchFn = createMockFetch([rateLimitResponse]);
   await expect(
-    sendMessage({ body: { content: "hi" }, url: "http://test", fetchFn, maxRetries: 0 }),
+    sendMessage({ body: { content: "hi" }, url: "https://test", fetchFn, maxRetries: 0 }),
   ).rejects.toThrow("Rate limit retry count exceeded.");
   expect(fetchFn).toHaveBeenCalledTimes(1);
 });

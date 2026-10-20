@@ -8,5 +8,5 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["src/index.d.ts"]
+  "include": ["src/index.d.ts", "test-fixtures/send-message.typecheck.ts"]
 }

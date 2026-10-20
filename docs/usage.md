@@ -51,7 +51,7 @@ Pass one object to `sendMessage`.
 | Option       | Default            | Description                                                            |
 | ------------ | ------------------ | ---------------------------------------------------------------------- |
 | `body`       | Required           | Discord message data.                                                  |
-| `url`        | `DISCORD_WEBHOOK`  | Absolute webhook URL with the `http:` or `https:` scheme.              |
+| `url`        | `DISCORD_WEBHOOK`  | Absolute webhook URL with the `https:` scheme.                         |
 | `maxRetries` | `3`                | Number of retries for HTTP 429 responses. Use an integer from 0 to 10. |
 | `fetchFn`    | `globalThis.fetch` | Fetch-compatible function for the request.                             |
 | `timeoutMs`  | `30000`            | Time limit in milliseconds for each request. Use a positive number.    |
@@ -65,6 +65,7 @@ Discord requires `thread_id` or `thread_name` when a webhook posts in a forum or
 Discord creates a `thread` when the request uses `threadName`.
 Discord sends a message to an existing `thread` when the request uses `threadId`.
 
+The package requires HTTPS because the URL contains a secret token.
 The package sends JSON. It does not upload files. Do not use `files` to upload binary data.
 Discord validates the message fields that this package does not check.
 
