@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, jest, test } from "@jest/globals";
-import { requestWithRetries } from "../../src/webhook/request.mjs";
+import { requestWithRetries, waitForRetry } from "../../src/webhook/request.mjs";
 
 const MAX_TIMER_DELAY = 2_147_483_647;
 
@@ -70,15 +70,7 @@ test("cancels a rate limit wait when the caller signal aborts", async () => {
 test("rejects a rate limit wait when its caller signal is already aborted", async () => {
   const controller = new AbortController();
   controller.abort();
-  await expect(
-    requestWithRetries(new URL("https://example.com"), {
-      body: {},
-      maxRetries: 1,
-      signal: controller.signal,
-      fetchFn: async () => ({ status: 429, headers: { get: () => "1" } }),
-      timeoutMs: 1000,
-    }),
-  ).rejects.toThrow("Webhook request aborted.");
+  await expect(waitForRetry(1000, controller.signal)).rejects.toThrow("Webhook request aborted.");
 });
 
 test("waits through retry intervals that exceed the timer limit", async () => {

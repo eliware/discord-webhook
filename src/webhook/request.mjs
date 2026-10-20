@@ -14,7 +14,7 @@ export async function requestWithRetries(target, options) {
   throw new Error("Rate limit retry count exceeded.");
 }
 
-function waitForRetry(waitMs, signal) {
+export function waitForRetry(waitMs, signal) {
   return new Promise((resolve, reject) => {
     let timerId;
     let remaining = waitMs;

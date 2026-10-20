@@ -29,6 +29,33 @@ test("maps an abort error to the timeout error", async () => {
   ).rejects.toThrow("Webhook request timed out.");
 });
 
+test("passes through non-abort request errors", async () => {
+  await expect(
+    requestOnce(new URL("https://example.com"), {
+      body: {},
+      fetchFn: async () => {
+        throw new Error("network failed");
+      },
+      timeoutMs: 1000,
+    }),
+  ).rejects.toThrow("network failed");
+});
+
+test("rejects a request when the caller signal is already aborted", async () => {
+  const controller = new AbortController();
+  controller.abort();
+  const fetchFn = jest.fn();
+  await expect(
+    requestOnce(new URL("https://example.com"), {
+      body: {},
+      fetchFn,
+      timeoutMs: 1000,
+      signal: controller.signal,
+    }),
+  ).rejects.toThrow("Webhook request aborted.");
+  expect(fetchFn).not.toHaveBeenCalled();
+});
+
 test("aborts an in-flight request when its timeout expires", async () => {
   const pending = requestOnce(new URL("https://example.com"), {
     body: {},
@@ -63,7 +90,7 @@ test("aborts an in-flight request from the caller signal", async () => {
       }),
     timeoutMs: 1000,
   });
-  const assertion = expect(pending).rejects.toThrow("cancelled");
+  const assertion = expect(pending).rejects.toThrow("Webhook request aborted.");
   await jest.advanceTimersByTimeAsync(1);
   await assertion;
 });

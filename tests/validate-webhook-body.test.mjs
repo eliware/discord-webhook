@@ -17,6 +17,22 @@ test("accepts valid webhook payloads", () => {
   ).toBe(true);
 });
 
+test("requires a supported message field", () => {
+  for (const body of [{}, { content: "" }, { embeds: [] }, { unknown: "value" }]) {
+    expect(() => validateWebhookBody(body)).toThrow(
+      "Discord webhook body must include content, embeds, components, or poll.",
+    );
+  }
+  for (const body of [
+    { content: "message" },
+    { embeds: [{}] },
+    { components: [{}] },
+    { poll: {} },
+  ]) {
+    expect(validateWebhookBody(body)).toBe(true);
+  }
+});
+
 test("rejects payloads that exceed Discord limits", () => {
   expect(() => validateWebhookBody({ content: "x".repeat(2001) })).toThrow(/content exceeds 2000/);
   expect(() => validateWebhookBody({ embeds: [{ description: "x".repeat(4097) }] })).toThrow(

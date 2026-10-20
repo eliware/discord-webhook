@@ -89,7 +89,7 @@ test("sendMessage handles a zero retry limit", async () => {
   const rateLimitResponse = { status: 429, headers: { get: () => "0" } };
   const fetchFn = createMockFetch([rateLimitResponse]);
   await expect(
-    sendMessage({ body: {}, url: "http://test", fetchFn, maxRetries: 0 }),
+    sendMessage({ body: { content: "hi" }, url: "http://test", fetchFn, maxRetries: 0 }),
   ).rejects.toThrow("Rate limit retry count exceeded.");
   expect(fetchFn).toHaveBeenCalledTimes(1);
 });
@@ -99,7 +99,7 @@ test("sends thread names in the body and thread IDs in the query", async () => {
   const fetchFn = jest.fn(async () => response);
   await expect(
     sendMessage({
-      body: {},
+      body: { content: "hi" },
       url: "https://test/hook",
       fetchFn,
       wait: true,
@@ -110,13 +110,16 @@ test("sends thread names in the body and thread IDs in the query", async () => {
   expect(fetchFn.mock.calls[0][0]).toContain("wait=true");
   expect(fetchFn.mock.calls[0][0]).toContain("thread_id=42");
   expect(fetchFn.mock.calls[0][0]).not.toContain("thread_name");
-  expect(JSON.parse(fetchFn.mock.calls[0][1].body)).toEqual({ thread_name: "Updates" });
+  expect(JSON.parse(fetchFn.mock.calls[0][1].body)).toEqual({
+    content: "hi",
+    thread_name: "Updates",
+  });
 });
 
 test("aborts a rate-limit wait from the caller signal", async () => {
   const controller = new AbortController();
   const pending = sendMessage({
-    body: {},
+    body: { content: "hi" },
     url: "https://test",
     signal: controller.signal,
     fetchFn: async () => ({ status: 429, headers: { get: () => "1" } }),
