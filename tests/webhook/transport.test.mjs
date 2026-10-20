@@ -81,3 +81,18 @@ test("aborts an in-flight response body read from the caller signal", async () =
   await jest.advanceTimersByTimeAsync(1);
   await assertion;
 });
+
+test("aborts a stalled rate limit response body when the timeout expires", async () => {
+  const pending = requestOnce(new URL("https://example.com"), {
+    body: {},
+    timeoutMs: 1,
+    fetchFn: async () => ({
+      status: 429,
+      headers: { get: () => null },
+      text: () => new Promise(() => {}),
+    }),
+  });
+  const assertion = expect(pending).rejects.toThrow("Webhook request timed out.");
+  await jest.advanceTimersByTimeAsync(1);
+  await assertion;
+});
