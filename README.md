@@ -23,29 +23,29 @@ A simple, promise-based Discord webhook sender for Node.js with built-in rate li
 
 ## Features
 
-- Send Discord webhook messages as JSON.
-- Retry rate limit responses.
-- Check message and embed limits before each request.
+- Send JSON messages through Discord webhooks.
+- Retry HTTP 429 responses.
+- Check message limits before each request.
 
 ## Requirements
 
-Use Node.js 26 or later. This package uses native ESM.
+Use Node.js 26 or later. The package uses native ESM.
 
 ## Setup
 
-Run `npm install @eliware/discord-webhook`. Set `DISCORD_WEBHOOK` to your private webhook URL.
+Run `npm install @eliware/discord-webhook`. Set `DISCORD_WEBHOOK` or pass the URL with `url`.
 
 ## Usage
 
-Read the [usage guide](docs/usage.md) for setup, options, limits, and errors. Read [release notes](RELEASE_NOTES.md) for changes.
+Read the [usage guide](docs/usage.md) for setup and API options. Read [release notes](RELEASE_NOTES.md) for changes.
 
 ## Development
 
-Read [AGENTS.md](AGENTS.md) before you change this repository.
+Read [specifications](specs/README.md) for repository requirements.
 
 ## Testing
 
-Run `npm test`.
+Run `npm test` for aggregate validation.
 
 ## Troubleshooting
 
@@ -53,19 +53,35 @@ Read the [troubleshooting guide](docs/troubleshooting.md).
 
 ## Security
 
-Keep webhook URLs private. Do not commit URLs or print them in logs.
+Keep webhook URLs and tokens private.
 
 ## API
 
-Read the [documentation index](docs/README.md) and [usage guide](docs/usage.md) for API details. Read [specifications](specs/README.md) for package requirements.
+The package exports `sendMessage`, `validateWebhookBody`, and `DISCORD_LIMITS` from `src/index.mjs`.
+TypeScript declarations are in `src/index.d.ts`. Read the [documentation index](docs/README.md) and [usage guide](docs/usage.md) for API details.
 
 ## Packaging
 
+The npm package includes these paths:
+
+- `src/`
+- `docs/`
+- `README.md`
+- `AGENTS.md`
+- `LICENSE`
+- `RELEASE_NOTES.md`
+- `examples/`
+- `specs/`
+- `.env.example`
+
+Use numeric `MAJOR.MINOR.PATCH` versions and matching `v<version>` tags.
+The npm workflow tests a matching tag and publishes with provenance.
+Eli approves each release candidate. Operations hands an approved candidate to DevOps for publication.
 Run `npm run pack` to check package contents.
 
 ## Examples
 
-Read the [examples index](examples/README.md).
+Read the [examples index](examples/README.md) for prerequisites and the run command.
 
 ## Support
 

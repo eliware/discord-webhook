@@ -2,43 +2,33 @@
 
 ## Project
 
-Build `@eliware/discord-webhook` with Node.js 26 and native ESM.
+Build `@eliware/discord-webhook` for Eliware. It sends messages through Discord webhooks.
 
 ## Scope and boundaries
 
-Keep changes in this repository. Keep the public API and Discord payload limits.
+Keep requirements in their authoritative specifications.
+Limit this repository to Discord webhook messages.
 
 ## Layout
 
-- Put runtime code in `src/`.
-- Put tests in `tests/` and mirror source file names.
-- Put user guides in `docs/`.
-
 ## Development
-
-Use native Node.js APIs. Keep TypeScript declarations in sync with the public API.
 
 ## Validation
 
-- Run `npm test`.
-- Run `npm run lint`.
-- Run `npm run audit`.
-- Run `npm run format`.
-- Run `npm run format:check`.
-- Run `npm run typecheck`.
-- Run `npm run pack`.
+Use Node.js 26 or later and native ESM for maintained JavaScript modules.
+Run `npm test` for aggregate validation.
+Run `npm run lint` for lint checks.
+Run `npm run audit` for dependency checks.
+Run `npm run format` to format files.
+Run `npm run format:check` to check formatting.
+
+Run `npm run typecheck` to check TypeScript declarations.
 
 ## Security
 
-Keep webhook URLs and tokens secret. Do not add credentials to code, logs, or docs.
-
 ## Changes
 
-Do not publish or deploy without user authorization.
-
 ## Library
-
-Export the public API from `src/index.mjs`. Keep its type declarations in `src/index.d.ts`.
 
 Run focused tests first during development.
 Run one test file with `npm test -- tests/path/to/example.test.mjs`.
@@ -47,5 +37,3 @@ Prevent repeated full-suite runs during development.
 Run the full `npm test` suite for final validation before a commit, milestone, or release.
 
 ## npm publication
-
-Keep package files and metadata correct. Run `npm run pack` before publication.
