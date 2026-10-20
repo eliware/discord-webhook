@@ -1,4 +1,4 @@
-// Example usage for @eliware/discord-webhook v12.0.0
+// Example usage for @eliware/discord-webhook.
 import { sendMessage } from "@eliware/discord-webhook";
 
 const url = "https://discord.com/api/webhooks/your-webhook-id/your-webhook-token";

@@ -5,7 +5,14 @@ test("accepts valid webhook payloads", () => {
   expect(
     validateWebhookBody({
       content: "hello",
-      embeds: [{ title: "title", fields: [{ name: "name", value: "value" }] }],
+      embeds: [
+        {
+          title: "title",
+          author: { name: "author" },
+          footer: { text: "footer" },
+          fields: [{ name: "name", value: "value" }],
+        },
+      ],
     }),
   ).toBe(true);
 });
@@ -68,4 +75,14 @@ test("rejects malformed embeds and field values", () => {
   expect(() =>
     validateWebhookBody({ embeds: [{ fields: [{ name: "ok", value: "x".repeat(1025) }] }] }),
   ).toThrow(/field 1 value exceeds 1024/);
+});
+
+test("rejects malformed embed footer and author objects", () => {
+  for (const property of ["footer", "author"]) {
+    for (const value of ["invalid", [], null]) {
+      expect(() => validateWebhookBody({ embeds: [{ [property]: value }] })).toThrow(
+        `Discord embed 1 ${property} must be an object.`,
+      );
+    }
+  }
 });

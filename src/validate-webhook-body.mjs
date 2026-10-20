@@ -27,6 +27,8 @@ function validateEmbed(embed, index) {
   if (!embed || typeof embed !== "object" || Array.isArray(embed)) {
     throw new Error(`Discord embed ${index + 1} must be an object.`);
   }
+  validateOptionalObject(embed.footer, index, "footer");
+  validateOptionalObject(embed.author, index, "author");
   const check = (value, limit, name) => {
     if (value !== undefined && typeof value !== "string") {
       throw new Error(`Discord embed ${index + 1} ${name} must be a string.`);
@@ -41,6 +43,12 @@ function validateEmbed(embed, index) {
   check(embed.author?.name, DISCORD_LIMITS.authorName, "author name");
   validateFields(embed.fields, index, check);
   return getTotalText(embed);
+}
+
+function validateOptionalObject(value, index, name) {
+  if (value !== undefined && (!value || typeof value !== "object" || Array.isArray(value))) {
+    throw new Error(`Discord embed ${index + 1} ${name} must be an object.`);
+  }
 }
 
 function validateFields(fields, index, check) {
