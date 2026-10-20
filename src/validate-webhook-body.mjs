@@ -11,8 +11,14 @@ export function validateWebhookBody(body) {
   if (body.embeds.length > DISCORD_LIMITS.embeds) {
     throw new Error(`Discord webhook supports at most ${DISCORD_LIMITS.embeds} embeds.`);
   }
+  let total = 0;
   for (const [index, embed] of body.embeds.entries()) {
-    validateEmbed(embed, index);
+    total += validateEmbed(embed, index);
+  }
+  if (total > DISCORD_LIMITS.totalEmbedText) {
+    throw new Error(
+      `Discord webhook embed text exceeds ${DISCORD_LIMITS.totalEmbedText} characters.`,
+    );
   }
   return true;
 }
@@ -34,7 +40,7 @@ function validateEmbed(embed, index) {
   check(embed.footer?.text, DISCORD_LIMITS.footerText, "footer text");
   check(embed.author?.name, DISCORD_LIMITS.authorName, "author name");
   validateFields(embed.fields, index, check);
-  validateTotalText(embed, index);
+  return getTotalText(embed);
 }
 
 function validateFields(fields, index, check) {
@@ -51,8 +57,8 @@ function validateFields(fields, index, check) {
   }
 }
 
-function validateTotalText(embed, index) {
-  const total =
+function getTotalText(embed) {
+  return (
     stringLength(embed.title) +
     stringLength(embed.description) +
     stringLength(embed.footer?.text) +
@@ -60,10 +66,6 @@ function validateTotalText(embed, index) {
     (embed.fields || []).reduce(
       (sum, field) => sum + stringLength(field.name) + stringLength(field.value),
       0,
-    );
-  if (total > DISCORD_LIMITS.totalEmbedText) {
-    throw new Error(
-      `Discord embed ${index + 1} text exceeds ${DISCORD_LIMITS.totalEmbedText} characters.`,
-    );
-  }
+    )
+  );
 }

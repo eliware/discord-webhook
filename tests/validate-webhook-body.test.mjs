@@ -36,7 +36,15 @@ test("rejects too many embeds, fields, and total embed text", () => {
         },
       ],
     }),
-  ).toThrow(/text exceeds 6000/);
+  ).toThrow(/embed text exceeds 6000/);
+});
+
+test("enforces the total embed text limit across all embeds", () => {
+  expect(() =>
+    validateWebhookBody({
+      embeds: [{ description: "x".repeat(4000) }, { description: "y".repeat(2001) }],
+    }),
+  ).toThrow(/embed text exceeds 6000/);
 });
 
 test("rejects malformed embeds and field values", () => {

@@ -49,26 +49,30 @@ The `wait`, `threadId`, and `threadName` values become URL query values. The pac
 
 `validateWebhookBody(body)` checks these Discord limits before a request. It returns `true` when the payload passes.
 
-| Message field             |          Maximum |
-| ------------------------- | ---------------: |
-| Message content           | 2,000 characters |
-| Embeds for each message   |               10 |
-| Embed title               |   256 characters |
-| Embed description         | 4,096 characters |
-| Embed footer text         | 2,048 characters |
-| Embed author name         |   256 characters |
-| Fields for each embed     |               25 |
-| Field name                |   256 characters |
-| Field value               | 1,024 characters |
-| Total text for each embed | 6,000 characters |
+| Message field                |          Maximum |
+| ---------------------------- | ---------------: |
+| Message content              | 2,000 characters |
+| Embeds for each message      |               10 |
+| Embed title                  |   256 characters |
+| Embed description            | 4,096 characters |
+| Embed footer text            | 2,048 characters |
+| Embed author name            |   256 characters |
+| Fields for each embed        |               25 |
+| Field name                   |   256 characters |
+| Field value                  | 1,024 characters |
+| Combined text for all embeds | 6,000 characters |
 
 The validator checks embed objects and field objects. It checks string values for the listed text limits.
+Discord limits combined embed text to 6,000 characters for each message.
 
 ## Retries and errors
 
-The package retries HTTP 429 responses no more than `maxRetries` times. It reads the `retry-after` response header as seconds. It caps each wait at `timeoutMs`.
+The package retries HTTP 429 responses no more than `maxRetries` times. It reads the `retry-after` header as seconds.
+If the header is missing or invalid, it reads the `retry_after` value from the response body.
+The package waits for the full interval that Discord provides. The request timeout does not limit this wait.
 
-If the header is missing or invalid, the package waits one second. After the last retry, the package throws `Rate limit retry count exceeded.`
+If both retry values are missing or invalid, the package waits one second.
+After the last retry, the package throws `Rate limit retry count exceeded.`
 
 For other failed HTTP responses, the package throws an error with the status code and response text, when available. A request timeout throws `Webhook request timed out.` A pre-aborted signal throws `Webhook request aborted.`
 

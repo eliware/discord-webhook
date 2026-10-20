@@ -1,6 +1,8 @@
 import { afterEach, beforeEach, expect, jest, test } from "@jest/globals";
 import { requestWithRetries } from "../../src/webhook/request.mjs";
 
+const MAX_TIMER_DELAY = 2_147_483_647;
+
 beforeEach(() => jest.useFakeTimers());
 afterEach(() => jest.useRealTimers());
 
@@ -77,4 +79,25 @@ test("rejects a rate limit wait when its caller signal is already aborted", asyn
       timeoutMs: 1000,
     }),
   ).rejects.toThrow("Webhook request aborted.");
+});
+
+test("waits through retry intervals that exceed the timer limit", async () => {
+  const responses = [
+    {
+      status: 429,
+      headers: { get: () => String((MAX_TIMER_DELAY + 10) / 1000) },
+    },
+    { status: 204, ok: true },
+  ];
+  const fetchFn = jest.fn(async () => responses.shift());
+  const pending = requestWithRetries(new URL("https://example.com"), {
+    body: {},
+    maxRetries: 1,
+    fetchFn,
+    timeoutMs: 1000,
+  });
+  await jest.advanceTimersByTimeAsync(MAX_TIMER_DELAY);
+  expect(fetchFn).toHaveBeenCalledTimes(1);
+  await jest.advanceTimersByTimeAsync(10);
+  await expect(pending).resolves.toEqual({ status: 204, ok: true });
 });
