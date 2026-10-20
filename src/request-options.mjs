@@ -22,8 +22,7 @@ export function validateOptions({ body, url, maxRetries, timeoutMs, signal }) {
   if (signal?.aborted) throw new Error("Webhook request aborted.");
 }
 
-export function addQueryOptions(target, { wait, threadId, threadName }) {
+export function addQueryOptions(target, { wait, threadId }) {
   if (wait !== undefined) target.searchParams.set("wait", String(Boolean(wait)));
   if (threadId !== undefined) target.searchParams.set("thread_id", String(threadId));
-  if (threadName !== undefined) target.searchParams.set("thread_name", String(threadName));
 }

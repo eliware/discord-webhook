@@ -31,12 +31,12 @@ test("rejects an aborted caller signal", () => {
   expect(() => validateOptions({ ...validOptions, signal: controller.signal })).toThrow("aborted");
 });
 
-test("adds only the set query options", () => {
+test("adds wait and thread ID query options", () => {
   const target = new URL("https://test/hook");
   addQueryOptions(target, { wait: true, threadId: 42, threadName: "updates" });
   expect(target.searchParams.get("wait")).toBe("true");
   expect(target.searchParams.get("thread_id")).toBe("42");
-  expect(target.searchParams.get("thread_name")).toBe("updates");
+  expect(target.searchParams.has("thread_name")).toBe(false);
 });
 
 test("keeps the URL when no query options are set", () => {

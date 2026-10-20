@@ -19,6 +19,7 @@ export async function sendMessage({
   validateOptions({ body, url, maxRetries, timeoutMs, signal });
   validateWebhookBody(body);
   const target = new URL(url);
-  addQueryOptions(target, { wait, threadId, threadName });
-  return requestWithRetries(target, { body, maxRetries, fetchFn, timeoutMs, signal });
+  addQueryOptions(target, { wait, threadId });
+  const payload = threadName === undefined ? body : { ...body, thread_name: threadName };
+  return requestWithRetries(target, { body: payload, maxRetries, fetchFn, timeoutMs, signal });
 }

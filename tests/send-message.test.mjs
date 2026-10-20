@@ -94,7 +94,7 @@ test("sendMessage handles a zero retry limit", async () => {
   expect(fetchFn).toHaveBeenCalledTimes(1);
 });
 
-test("supports webhook query options", async () => {
+test("sends thread names in the body and thread IDs in the query", async () => {
   const response = { status: 204, ok: true };
   const fetchFn = jest.fn(async () => response);
   await expect(
@@ -104,10 +104,13 @@ test("supports webhook query options", async () => {
       fetchFn,
       wait: true,
       threadId: "42",
-      threadName: "thread",
+      threadName: "Updates",
     }),
   ).resolves.toBe(response);
   expect(fetchFn.mock.calls[0][0]).toContain("wait=true");
+  expect(fetchFn.mock.calls[0][0]).toContain("thread_id=42");
+  expect(fetchFn.mock.calls[0][0]).not.toContain("thread_name");
+  expect(JSON.parse(fetchFn.mock.calls[0][1].body)).toEqual({ thread_name: "Updates" });
 });
 
 test("aborts a rate-limit wait from the caller signal", async () => {
