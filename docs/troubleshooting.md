@@ -55,4 +55,15 @@ Set `wait: true` when the application needs Discord to return the created messag
 ## A custom fetch function fails
 
 Pass a function that accepts the standard `fetch` URL and options arguments.
-Make sure the function respects the supplied `AbortSignal` and returns a `Response` object.
+Make sure the function respects the supplied `AbortSignal` and returns a response object with `status`, `ok`, `headers`, and `text()` behavior.
+
+## The logger receives no events
+
+Pass the logger in the `logger` option for each `sendMessage` call.
+Check that the logger has methods for the levels that the application displays.
+Check the logger's level filter because it can hide lower-priority events.
+
+## A logger method causes the request to fail
+
+Make sure each logger method does not throw an error.
+The package calls logger methods while it processes the message and does not suppress logger errors.

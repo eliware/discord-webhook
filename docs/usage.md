@@ -44,6 +44,21 @@ The default value is `false`. The function returns the native `Response` object 
 The function rejects with an `Error` when local validation fails, the request fails, or Discord returns an HTTP error.
 Catch the error when the application must show a failure message.
 
+The package sends one `POST` request with a JSON body. It does not create a Discord client or keep a connection open.
+Read the response body only when `wait` is `true`. Discord returns an empty response by default.
+
+## Public API
+
+The package exports three JavaScript functions and values:
+
+| Export                      | Description                                                        |
+| --------------------------- | ------------------------------------------------------------------ |
+| `sendMessage(params)`       | Validate and send one webhook message.                             |
+| `validateWebhookBody(body)` | Check the supported local message rules without sending a request. |
+| `DISCORD_LIMITS`            | Read the frozen object with the message and embed limits.          |
+
+The package also includes TypeScript declarations for `DiscordEmbed`, `DiscordMessage`, `SendMessageParams`, and `WebhookLogger`.
+
 ## Options
 
 Pass one object to `sendMessage`.
@@ -74,7 +89,24 @@ const logger = createLogger({ format: "json", level: "http" });
 await sendMessage({ body: { content: "Deployment completed." }, logger });
 ```
 
-Log events include the request number, HTTP status, retry interval, or timeout when needed. The package does not include the webhook URL, message body, credentials, or raw error text in its records.
+The logger receives the event name as `message` and an object with event details as `context`.
+The package emits these events:
+
+| Level     | Event                          | Context fields            |
+| --------- | ------------------------------ | ------------------------- |
+| `silly`   | `webhook.message.received`     | `operation`               |
+| `debug`   | `webhook.message.validated`    | `operation`               |
+| `verbose` | `webhook.request.attempt`      | `attempt`                 |
+| `http`    | `webhook.request.sent`         | `timeoutMs`               |
+| `http`    | `webhook.response.received`    | `attempt`, `status`       |
+| `info`    | `webhook.request.succeeded`    | `attempt`, `status`       |
+| `warn`    | `webhook.rate_limit.received`  | `attempt`, `retryAfterMs` |
+| `debug`   | `webhook.retry.scheduled`      | `attempt`, `retryAfterMs` |
+| `error`   | `webhook.request.failed`       | `errorType`               |
+| `error`   | `webhook.retry_limit.exceeded` | `attempts`                |
+
+The package does not include the webhook URL, message body, credentials, or raw error text in its records.
+Your logger controls level filtering and output. Make sure that its methods do not throw errors.
 
 The `wait` and `threadId` options become URL query values. The `threadName` option becomes the `thread_name` JSON field.
 Discord requires `thread_id` or `thread_name` when a webhook posts in a forum or media channel.
@@ -107,10 +139,11 @@ The local check counts JavaScript string length. It does not remove spaces at th
 Discord removes leading and trailing whitespace when it checks embed text limits.
 
 The local check requires a string for `content` when you include it.
-It requires arrays for `embeds` and `fields` when you include them.
-It checks embed and field object shapes, listed text limits, and supported string values.
-It does not validate every Discord field.
-The body must include non-empty `content`, a non-empty `embeds` array, a non-empty `components` array, or a `poll` object.
+It requires an array for `embeds` and an array for `fields` when you include them.
+It requires each embed, footer, author, and field to be an object.
+It checks the listed text limits and string types for embed text values.
+It does not validate every Discord field or the content of `components` and `poll`.
+The body must include non-empty `content`, a non-empty `embeds` array, a non-empty `components` array, or a non-null `poll` value.
 
 `DISCORD_LIMITS` exports a frozen object with the supported limit values.
 
@@ -126,11 +159,20 @@ The request timeout does not limit the retry wait.
 If both retry values are missing or invalid, the package waits one second.
 After the final rate-limit response, the package throws `Rate limit retry count exceeded.`
 
-The timeout applies to each network request. It does not include time spent waiting between retries.
+The timeout applies to each network request and each response body read for an HTTP error or rate limit.
+It does not include time spent waiting between retries.
+
 The package throws `Webhook request timed out.` when the timeout ends the request.
 The package throws `Webhook request aborted.` when the caller cancels before or during a request.
 The package includes the HTTP status and response text in errors for other HTTP errors, when available.
-Network errors from `fetch` can also reject the request.
+Network errors from `fetch` can also reject the request. The package does not convert them to a package-specific error.
+
+## Use a custom fetch function
+
+Set `fetchFn` to a function that accepts the same URL and options as the built-in `fetch` function.
+The package passes a `POST` method, a JSON content type, a serialized body, and an `AbortSignal` to this function.
+Return a response object with `status`, `ok`, `headers`, and `text()` behavior.
+Respect the supplied signal so that the timeout and caller cancellation can stop the network request.
 
 ## Security
 
