@@ -37,9 +37,10 @@ const message = await response.json();
 console.log(message.id);
 ```
 
-Discord returns the created message when `wait` is `true`.
+When `wait` is `true`, Discord places the created message in the response body.
 Discord returns an empty `204` response when `wait` is `false`.
 The default value is `false`. The function returns the native `Response` object for each `2xx` response.
+Call `response.json()` to read the created message when `wait` is `true`.
 
 The function rejects with an `Error` when local validation fails, the request fails, or Discord returns an HTTP error.
 Catch the error when the application must show a failure message.

@@ -50,7 +50,8 @@ The package throws `Webhook request aborted.` when the signal cancels a request 
 ## The response has no message body
 
 Discord returns an empty `204` response when `wait` is `false`, which is the default.
-Set `wait: true` when the application needs Discord to return the created message.
+Set `wait: true` when the application needs Discord to include the created message in the response body.
+Call `response.json()` to read the message from the returned `Response` object.
 
 ## A custom fetch function fails
 
