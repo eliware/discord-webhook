@@ -11,6 +11,7 @@ export function validateOptions({ body, url, maxRetries, fetchFn, timeoutMs, sig
       target.port !== "" ||
       target.username !== "" ||
       target.password !== "" ||
+      /%2f|%5c/i.test(target.pathname) ||
       !WEBHOOK_PATH.test(target.pathname)
     ) {
       throw new Error("Unsupported webhook URL scheme.");

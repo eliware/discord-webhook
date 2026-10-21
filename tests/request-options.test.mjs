@@ -35,6 +35,8 @@ test("rejects invalid URLs and message bodies", () => {
     "https://discord.com.evil.com/api/webhooks/123456789012345678/token",
     "https://discord.com:8443/api/webhooks/123456789012345678/token",
     "https://user@discord.com/api/webhooks/123456789012345678/token",
+    "https://discord.com/api/webhooks/123%2F456/token",
+    "https://discord.com/api/webhooks/123/token%5Cextra",
   ]) {
     expect(() => validateOptions({ ...validOptions, url })).toThrow("valid webhook URL");
   }
