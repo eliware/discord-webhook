@@ -1,5 +1,12 @@
 # Release Notes
 
+## 14.0.0 — 2026-10-20
+
+### Changed
+
+- Align the package, specification, and repository guidance with Convention v14.
+- Use `@eliware/test` v14 and update the npm dependency tree.
+
 ## 13.0.0 — 2026-10-19
 
 ### Added

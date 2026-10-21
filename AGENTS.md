@@ -2,16 +2,19 @@
 
 ## Project
 
-Build `@eliware/discord-webhook` for Eliware. It sends messages through Discord webhooks.
+Build `@eliware/discord-webhook` for Eliware.
 
 ## Scope and boundaries
 
-Keep requirements in their authoritative specifications.
-Limit this repository to Discord webhook messages.
+Keep repository requirements in `specs/directives.yaml`.
 
 ## Layout
 
+Use `README.md` and `specs/README.md` to find maintained files.
+
 ## Development
+
+Give each source and test module one cohesive purpose.
 
 ## Validation
 
@@ -22,11 +25,13 @@ Run `npm run audit` for dependency checks.
 Run `npm run format` to format files.
 Run `npm run format:check` to check formatting.
 
-Run `npm run typecheck` to check TypeScript declarations.
-
 ## Security
 
+Keep credentials, secret values, private data, and runtime state out of Git.
+
 ## Changes
+
+Keep each document in the repository that owns its content. Update its nearest index when you add a document.
 
 ## Library
 
@@ -37,3 +42,5 @@ Prevent repeated full-suite runs during development.
 Run the full `npm test` suite for final validation before a commit, milestone, or release.
 
 ## npm publication
+
+Run `npm run pack` to check package contents. Publish only after approved release steps.
