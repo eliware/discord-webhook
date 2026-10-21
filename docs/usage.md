@@ -96,6 +96,37 @@ Logger methods use the `method(message, context)` interface. Each method is opti
 The supported levels are `error`, `warn`, `info`, `http`, `verbose`, `debug`, and `silly`.
 The package skips a level when the logger does not provide its method.
 
+Install a logger package as a direct dependency of your project. A direct dependency is a package that your project lists in its own `package.json`.
+The `@eliware/discord-webhook` dependency on `@eliware/log` does not make `@eliware/log` a direct dependency of your project.
+
+### Application projects
+
+Use `@eliware/common` to create a logger in an application. Install both packages:
+
+```sh
+npm install @eliware/discord-webhook @eliware/common
+```
+
+Import `createLogger` from `@eliware/common`:
+
+```js
+import { createLogger } from "@eliware/common";
+import { sendMessage } from "@eliware/discord-webhook";
+
+const logger = createLogger({ format: "json", level: "http" });
+await sendMessage({ body: { content: "Deployment completed." }, logger });
+```
+
+### Library projects
+
+Use `@eliware/log` to create a logger in a library. Install both packages:
+
+```sh
+npm install @eliware/discord-webhook @eliware/log
+```
+
+Import `createLogger` from `@eliware/log`:
+
 ```js
 import { createLogger } from "@eliware/log";
 import { sendMessage } from "@eliware/discord-webhook";

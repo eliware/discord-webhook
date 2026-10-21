@@ -14,6 +14,7 @@
 - Align repository guidance with Convention v14.
 - Upgrade `@eliware/test` to v14 and refresh the npm dependency tree.
 - Expand end-user guides with API types, logger events, custom fetch behavior, cancellation, and request details.
+- Document direct logger dependencies for application and library consumers.
 
 ## 13.0.0 — 2026-10-19
 
