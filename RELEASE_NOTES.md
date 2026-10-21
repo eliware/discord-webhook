@@ -1,5 +1,13 @@
 # Release Notes
 
+## 15.0.0 — 2026-10-21
+
+### Changed
+
+- Set the package and directive specification versions to 15.0.0 and 15.0.
+- Upgrade `@eliware/log` and `@eliware/test` to v15.
+- Refresh the npm dependency tree to current releases.
+
 ## 14.0.0 — 2026-10-21
 
 ### Added
