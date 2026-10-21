@@ -1,7 +1,13 @@
 import { expect, test } from "@jest/globals";
 import { validateOptions } from "../src/request-options.mjs";
 
-const validOptions = { body: {}, url: "https://test", maxRetries: 3, timeoutMs: 1000 };
+const validOptions = {
+  body: {},
+  url: "https://test",
+  maxRetries: 3,
+  fetchFn: async () => {},
+  timeoutMs: 1000,
+};
 
 test("accepts valid request options", () => {
   expect(validateOptions(validOptions)).toBeUndefined();
@@ -29,6 +35,14 @@ test("rejects invalid retry and timeout values", () => {
   }
   for (const timeoutMs of [0, Infinity]) {
     expect(() => validateOptions({ ...validOptions, timeoutMs })).toThrow("timeoutMs");
+  }
+});
+
+test("rejects a missing or invalid fetch function", () => {
+  for (const fetchFn of [undefined, null, "fetch"]) {
+    expect(() => validateOptions({ ...validOptions, fetchFn })).toThrow(
+      "fetchFn must be a function.",
+    );
   }
 });
 

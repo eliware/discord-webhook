@@ -33,9 +33,8 @@ export async function requestOnce(target, { body, fetchFn, timeoutMs, signal, lo
     writeLog(logger, "error", "webhook.request.failed", {
       errorType: error instanceof Error ? "Error" : "UnknownError",
     });
-    if (error?.name === "AbortError") {
-      throw new Error(signal?.aborted ? "Webhook request aborted." : "Webhook request timed out.");
-    }
+    if (signal?.aborted) throw new Error("Webhook request aborted.");
+    if (error?.name === "AbortError") throw new Error("Webhook request timed out.");
     throw error;
   } finally {
     clearTimeout(timer);

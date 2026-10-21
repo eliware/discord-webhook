@@ -56,4 +56,4 @@ export declare const DISCORD_LIMITS: Readonly<{
   totalEmbedText: 6000;
 }>;
 export declare function validateWebhookBody(body: DiscordMessage): true;
-export declare function sendMessage(params: SendMessageParams): Promise<Response>;
+export declare function sendMessage(params?: SendMessageParams): Promise<Response>;

@@ -23,8 +23,11 @@ export function waitForRetry(waitMs, signal) {
       cleanup();
       reject(new Error("Webhook request aborted."));
     };
-    schedule();
     signal?.addEventListener("abort", onAbort, { once: true });
-    if (signal?.aborted) onAbort();
+    if (signal?.aborted) {
+      onAbort();
+      return;
+    }
+    schedule();
   });
 }

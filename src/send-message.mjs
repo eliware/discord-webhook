@@ -20,7 +20,7 @@ export async function sendMessage({
   logger,
 } = {}) {
   writeLog(logger, "silly", "webhook.message.received", { operation: "sendMessage" });
-  validateOptions({ body, url, maxRetries, timeoutMs, signal });
+  validateOptions({ body, url, maxRetries, fetchFn, timeoutMs, signal });
   validateWebhookBody(body);
   const target = new URL(url);
   addQueryOptions(target, { wait, threadId });

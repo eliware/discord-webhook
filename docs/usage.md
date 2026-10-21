@@ -205,8 +205,9 @@ The request timeout does not limit the retry wait.
 If both retry values are missing or invalid, the package waits one second.
 After the final rate-limit response, the package throws `Rate limit retry count exceeded.`
 
-The timeout covers one request from the start of `fetch` through the response body read for an HTTP error or rate limit.
-It does not include time spent waiting between retries.
+The timeout applies to each fetch request. For an HTTP error or rate limit, it also covers the response body read.
+For a 2xx response, the package returns the `Response` without reading its body.
+The timeout does not cover later reads from a 2xx response body or time spent waiting between retries.
 
 The package throws `Webhook request timed out.` when the timeout ends the request.
 The package throws `Webhook request aborted.` when the caller cancels before or during a request.
