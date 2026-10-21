@@ -1,5 +1,5 @@
 const MAX_RETRIES = 10;
-const WEBHOOK_PATH = /^\/api(?:\/v\d+)?\/webhooks\/\d+\/[A-Za-z0-9._-]+\/?$/;
+const WEBHOOK_PATH = /^\/api(?:\/v\d+)?\/webhooks\/[^/]+\/[^/]+\/?$/;
 
 export function validateOptions({ body, url, maxRetries, fetchFn, timeoutMs, signal }) {
   if (!url || typeof url !== "string") throw new Error("A valid webhook URL is required.");

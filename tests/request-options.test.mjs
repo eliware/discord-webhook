@@ -13,6 +13,15 @@ test("accepts valid request options", () => {
   expect(validateOptions(validOptions)).toBeUndefined();
 });
 
+test("accepts opaque webhook ID and token path segments", () => {
+  expect(
+    validateOptions({
+      ...validOptions,
+      url: "https://discord.com/api/webhooks/id:opaque/token+opaque~value",
+    }),
+  ).toBeUndefined();
+});
+
 test("rejects invalid URLs and message bodies", () => {
   for (const url of [
     undefined,
