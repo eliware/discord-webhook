@@ -1,5 +1,6 @@
 import { DISCORD_LIMITS } from "./limits.mjs";
-import { validateEmbed } from "./payload/embed-validation.mjs";
+import { validateEmbed } from "./payload/embed/validation.mjs";
+import { getEmbedTextLength } from "./payload/embed/text.mjs";
 
 /** Validate payloads against Discord limits before making a network request. */
 export function validateWebhookBody(body) {
@@ -18,7 +19,8 @@ export function validateWebhookBody(body) {
   }
   let total = 0;
   for (const [index, embed] of embeds.entries()) {
-    total += validateEmbed(embed, index);
+    validateEmbed(embed, index);
+    total += getEmbedTextLength(embed);
   }
   if (total > DISCORD_LIMITS.totalEmbedText) {
     throw new Error(

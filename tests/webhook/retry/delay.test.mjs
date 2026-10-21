@@ -14,4 +14,5 @@ test("uses the retry_after body value when the header is missing", () => {
 test("uses the default delay when the retry values are invalid", () => {
   const response = { headers: { get: () => "invalid" } };
   expect(getRetryDelay(response, "invalid JSON")).toBe(1000);
+  expect(getRetryDelay(response, "{}")).toBe(1000);
 });
