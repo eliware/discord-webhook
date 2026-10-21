@@ -7,7 +7,17 @@ test("converts valid seconds to milliseconds", () => {
 });
 
 test("returns null for invalid or out-of-range seconds", () => {
-  for (const value of [undefined, null, "", " ", "invalid", -1, Infinity, Number.MAX_VALUE]) {
+  for (const value of [
+    undefined,
+    null,
+    "",
+    " ",
+    "invalid",
+    -1,
+    Infinity,
+    Number.MAX_VALUE,
+    Number.MAX_SAFE_INTEGER / 1000 + 1,
+  ]) {
     expect(parseRetrySeconds(value)).toBeNull();
   }
 });

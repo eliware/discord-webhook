@@ -4,5 +4,5 @@ export function parseRetrySeconds(value) {
   const seconds = Number(value);
   if (!Number.isFinite(seconds) || seconds < 0) return null;
   const delayMs = seconds * 1000;
-  return Number.isFinite(delayMs) ? delayMs : null;
+  return Number.isFinite(delayMs) && delayMs <= Number.MAX_SAFE_INTEGER ? delayMs : null;
 }

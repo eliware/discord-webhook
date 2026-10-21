@@ -17,6 +17,12 @@ test("accepts valid webhook payloads", () => {
   ).toBe(true);
 });
 
+test("rejects missing or invalid top-level bodies", () => {
+  for (const body of [undefined, null, "text", []]) {
+    expect(() => validateWebhookBody(body)).toThrow("Discord webhook body must be an object.");
+  }
+});
+
 test("requires a supported message field", () => {
   for (const body of [{}, { content: "" }, { embeds: [] }, { unknown: "value" }]) {
     expect(() => validateWebhookBody(body)).toThrow(

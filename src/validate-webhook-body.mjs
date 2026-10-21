@@ -4,6 +4,9 @@ import { getEmbedTextLength } from "./payload/embed/text.mjs";
 
 /** Validate payloads against Discord limits before making a network request. */
 export function validateWebhookBody(body) {
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    throw new Error("Discord webhook body must be an object.");
+  }
   if (body.content !== undefined && typeof body.content !== "string") {
     throw new Error("Discord webhook content must be a string.");
   }
