@@ -200,7 +200,8 @@ The body must include non-empty `content`, a non-empty `embeds` array, a non-emp
 
 The package retries HTTP 429 rate-limit responses a maximum of `maxRetries` times.
 The first request does not count as a retry. The package does not retry other HTTP errors.
-The package reads the `Retry-After` response header in seconds.
+The package reads the `Retry-After` response header as seconds or an HTTP date.
+An HTTP date gives a date and time in the standard HTTP format.
 If that value is missing or invalid, the package reads `retry_after` from the response body.
 
 The package waits for the full interval that Discord provides.
