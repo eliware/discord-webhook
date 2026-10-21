@@ -43,6 +43,9 @@
   "engines": {
     "node": ">=26"
   },
+  "dependencies": {
+    "@eliware/log": "^14.0.0"
+  },
   "devDependencies": {
     "@eliware/test": "^14.0.0",
     "typescript": "^7.0.2"

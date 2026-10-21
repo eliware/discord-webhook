@@ -2,6 +2,12 @@
 
 ## 14.0.0 — 2026-10-20
 
+### Added
+
+- Add `@eliware/log` as a runtime dependency and support an injectable logger in `sendMessage`.
+- Write structured request, response, retry, and failure events without webhook URLs or message bodies.
+- Document how to pass a logger and use its supported levels.
+
 ### Changed
 
 - Align the package, specification, and repository guidance with Convention v14.

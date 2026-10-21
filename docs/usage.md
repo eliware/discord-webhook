@@ -59,6 +59,22 @@ Pass one object to `sendMessage`.
 | `wait`       | `false`            | Ask Discord to return the created message.                             |
 | `threadId`   | None               | Send the message to a `thread` by its ID.                              |
 | `threadName` | None               | Create a `thread` with this name in a forum or media channel.          |
+| `logger`     | None               | Optional logger with methods for the supported log levels.             |
+
+## Logging
+
+Pass a logger with `logger` to receive structured event names and safe context. The package does not log when you omit this option.
+Logger methods use the `method(message, context)` interface. The supported levels are `error`, `warn`, `info`, `http`, `verbose`, `debug`, and `silly`.
+
+```js
+import { createLogger } from "@eliware/log";
+import { sendMessage } from "@eliware/discord-webhook";
+
+const logger = createLogger({ format: "json", level: "http" });
+await sendMessage({ body: { content: "Deployment completed." }, logger });
+```
+
+Log events include the request number, HTTP status, retry interval, or timeout when needed. The package does not include the webhook URL, message body, credentials, or raw error text in its records.
 
 The `wait` and `threadId` options become URL query values. The `threadName` option becomes the `thread_name` JSON field.
 Discord requires `thread_id` or `thread_name` when a webhook posts in a forum or media channel.

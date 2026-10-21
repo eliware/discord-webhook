@@ -1,6 +1,7 @@
 import { readResponse } from "./response.mjs";
+import { writeLog } from "../logging.mjs";
 
-export async function requestOnce(target, { body, fetchFn, timeoutMs, signal }) {
+export async function requestOnce(target, { body, fetchFn, timeoutMs, signal, logger }) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   const onAbort = () => controller.abort();
@@ -17,6 +18,7 @@ export async function requestOnce(target, { body, fetchFn, timeoutMs, signal }) 
   else signal?.addEventListener("abort", onAbort, { once: true });
   try {
     if (controller.signal.aborted) return await aborted;
+    writeLog(logger, "http", "webhook.request.sent", { timeoutMs });
     const request = async () => {
       const response = await fetchFn(target.toString(), {
         method: "POST",
@@ -28,6 +30,9 @@ export async function requestOnce(target, { body, fetchFn, timeoutMs, signal }) 
     };
     return await Promise.race([request(), aborted]);
   } catch (error) {
+    writeLog(logger, "error", "webhook.request.failed", {
+      errorType: error instanceof Error ? "Error" : "UnknownError",
+    });
     if (error?.name === "AbortError") {
       throw new Error(signal?.aborted ? "Webhook request aborted." : "Webhook request timed out.");
     }

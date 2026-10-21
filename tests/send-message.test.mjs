@@ -21,6 +21,63 @@ test("sendMessage sends successfully on first try", async () => {
   expect(res).toBe(mockResponse);
 });
 
+test("sendMessage injects a logger and emits safe structured events", async () => {
+  const response = { status: 204, ok: true, headers: { get: () => null } };
+  const calls = [];
+  const logger = Object.fromEntries(
+    ["error", "warn", "info", "http", "verbose", "debug", "silly"].map((level) => [
+      level,
+      (event, context) => calls.push({ level, event, context }),
+    ]),
+  );
+  await sendMessage({
+    body: { content: "private message" },
+    url: "https://discord.example/webhook/private-token",
+    fetchFn: createMockFetch([response]),
+    logger,
+  });
+  expect(calls.map(({ level }) => level)).toEqual([
+    "silly",
+    "debug",
+    "verbose",
+    "http",
+    "http",
+    "info",
+  ]);
+  expect(JSON.stringify(calls)).not.toContain("private-token");
+  expect(JSON.stringify(calls)).not.toContain("private message");
+  expect(calls.at(-1)).toEqual({
+    level: "info",
+    event: "webhook.request.succeeded",
+    context: { attempt: 1, status: 204 },
+  });
+});
+
+test("sendMessage logs rate limits and retry exhaustion", async () => {
+  const calls = [];
+  const logger = Object.fromEntries(
+    ["error", "warn", "info", "http", "verbose", "debug", "silly"].map((level) => [
+      level,
+      (event, context) => calls.push({ level, event, context }),
+    ]),
+  );
+  await expect(
+    sendMessage({
+      body: { content: "hi" },
+      url: "https://example.com/secret",
+      fetchFn: createMockFetch([{ status: 429, headers: { get: () => "0" } }]),
+      maxRetries: 0,
+      logger,
+    }),
+  ).rejects.toThrow("Rate limit retry count exceeded.");
+  expect(calls.map(({ level }) => level)).toContain("warn");
+  expect(calls.at(-1)).toEqual({
+    level: "error",
+    event: "webhook.retry_limit.exceeded",
+    context: { attempts: 1 },
+  });
+});
+
 test("sendMessage retries on rate limit and succeeds", async () => {
   const rateLimitResponse = {
     status: 429,

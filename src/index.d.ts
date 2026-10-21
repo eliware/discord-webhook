@@ -32,6 +32,16 @@ export interface SendMessageParams {
   wait?: boolean;
   threadId?: string;
   threadName?: string;
+  logger?: WebhookLogger;
+}
+export interface WebhookLogger {
+  error?: (message: string, context?: Record<string, unknown>) => unknown;
+  warn?: (message: string, context?: Record<string, unknown>) => unknown;
+  info?: (message: string, context?: Record<string, unknown>) => unknown;
+  http?: (message: string, context?: Record<string, unknown>) => unknown;
+  verbose?: (message: string, context?: Record<string, unknown>) => unknown;
+  debug?: (message: string, context?: Record<string, unknown>) => unknown;
+  silly?: (message: string, context?: Record<string, unknown>) => unknown;
 }
 export declare const DISCORD_LIMITS: Readonly<{
   content: 2000;
