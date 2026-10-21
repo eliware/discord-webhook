@@ -17,7 +17,11 @@ function createMockFetch(responses) {
 test("sendMessage sends successfully on first try", async () => {
   const mockResponse = { status: 204, ok: true, headers: { get: () => null } };
   const fetchFn = createMockFetch([mockResponse]);
-  const res = await sendMessage({ body: { content: "hi" }, url: "https://test", fetchFn });
+  const res = await sendMessage({
+    body: { content: "hi" },
+    url: "https://discord.com/api/webhooks/123/token",
+    fetchFn,
+  });
   expect(res).toBe(mockResponse);
 });
 
@@ -32,7 +36,7 @@ test("sendMessage injects a logger and emits safe structured events", async () =
   );
   await sendMessage({
     body: { content: "private message" },
-    url: "https://discord.example/webhook/private-token",
+    url: "https://discord.com/api/webhooks/123/private-token",
     fetchFn: createMockFetch([response]),
     logger,
   });
@@ -64,7 +68,7 @@ test("sendMessage logs rate limits and retry exhaustion", async () => {
   await expect(
     sendMessage({
       body: { content: "hi" },
-      url: "https://example.com/secret",
+      url: "https://discord.com/api/webhooks/123/secret",
       fetchFn: createMockFetch([{ status: 429, headers: { get: () => "0" } }]),
       maxRetries: 0,
       logger,
@@ -88,7 +92,7 @@ test("sendMessage retries on rate limit and succeeds", async () => {
   const fetchFn = createMockFetch([rateLimitResponse, successResponse]);
   const pending = sendMessage({
     body: { content: "hi" },
-    url: "https://test",
+    url: "https://discord.com/api/webhooks/123/token",
     fetchFn,
     maxRetries: 2,
   });
@@ -111,7 +115,7 @@ test("sendMessage throws after exceeding max retries", async () => {
   ]);
   const pending = sendMessage({
     body: { content: "hi" },
-    url: "https://test",
+    url: "https://discord.com/api/webhooks/123/token",
     fetchFn,
     maxRetries: 2,
   });
@@ -124,9 +128,22 @@ test("sendMessage rejects missing or invalid URL", async () => {
   await expect(sendMessage()).rejects.toThrow("A valid webhook URL is required.");
 });
 
+test("sendMessage rejects an untrusted host or webhook path before sending the body", async () => {
+  const fetchFn = jest.fn();
+  for (const url of [
+    "https://example.com/api/webhooks/123/token",
+    "https://discord.com/messages/123/token",
+  ]) {
+    await expect(sendMessage({ body: { content: "private" }, url, fetchFn })).rejects.toThrow(
+      "A valid webhook URL is required.",
+    );
+  }
+  expect(fetchFn).not.toHaveBeenCalled();
+});
+
 test("sendMessage uses environment URL and retries with default delay for invalid retry-after", async () => {
   const previousWebhook = process.env.DISCORD_WEBHOOK;
-  process.env.DISCORD_WEBHOOK = "https://env-test";
+  process.env.DISCORD_WEBHOOK = "https://discord.com/api/webhooks/123/token";
   const rateLimitResponse = { status: 429, headers: { get: () => "invalid" } };
   const successResponse = { status: 200 };
   const fetchFn = createMockFetch([rateLimitResponse, successResponse]);
@@ -134,7 +151,10 @@ test("sendMessage uses environment URL and retries with default delay for invali
   const pending = sendMessage({ body: { content: "hi" }, fetchFn, maxRetries: 1 });
   await jest.advanceTimersByTimeAsync(1000);
   await expect(pending).resolves.toBe(successResponse);
-  expect(fetchFn).toHaveBeenCalledWith("https://env-test/", expect.any(Object));
+  expect(fetchFn).toHaveBeenCalledWith(
+    "https://discord.com/api/webhooks/123/token",
+    expect.any(Object),
+  );
   expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 1000);
 
   setTimeoutSpy.mockRestore();
@@ -146,7 +166,12 @@ test("sendMessage handles a zero retry limit", async () => {
   const rateLimitResponse = { status: 429, headers: { get: () => "0" } };
   const fetchFn = createMockFetch([rateLimitResponse]);
   await expect(
-    sendMessage({ body: { content: "hi" }, url: "https://test", fetchFn, maxRetries: 0 }),
+    sendMessage({
+      body: { content: "hi" },
+      url: "https://discord.com/api/webhooks/123/token",
+      fetchFn,
+      maxRetries: 0,
+    }),
   ).rejects.toThrow("Rate limit retry count exceeded.");
   expect(fetchFn).toHaveBeenCalledTimes(1);
 });
@@ -157,7 +182,7 @@ test("sends thread names in the body and thread IDs in the query", async () => {
   await expect(
     sendMessage({
       body: { content: "hi" },
-      url: "https://test/hook",
+      url: "https://discord.com/api/webhooks/123/token",
       fetchFn,
       wait: true,
       threadId: "42",
@@ -177,7 +202,7 @@ test("aborts a rate-limit wait from the caller signal", async () => {
   const controller = new AbortController();
   const pending = sendMessage({
     body: { content: "hi" },
-    url: "https://test",
+    url: "https://discord.com/api/webhooks/123/token",
     signal: controller.signal,
     fetchFn: async () => ({ status: 429, headers: { get: () => "1" } }),
   });

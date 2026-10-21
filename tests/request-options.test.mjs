@@ -3,7 +3,7 @@ import { validateOptions } from "../src/request-options.mjs";
 
 const validOptions = {
   body: {},
-  url: "https://test",
+  url: "https://discord.com/api/webhooks/123456789012345678/token_value-123",
   maxRetries: 3,
   fetchFn: async () => {},
   timeoutMs: 1000,
@@ -21,6 +21,11 @@ test("rejects invalid URLs and message bodies", () => {
     "http://example.com",
     "file:///tmp/webhook",
     "ftp://example.com",
+    "https://example.com/api/webhooks/123456789012345678/token",
+    "https://discord.com/messages/123456789012345678/token",
+    "https://discord.com.evil.com/api/webhooks/123456789012345678/token",
+    "https://discord.com:8443/api/webhooks/123456789012345678/token",
+    "https://user@discord.com/api/webhooks/123456789012345678/token",
   ]) {
     expect(() => validateOptions({ ...validOptions, url })).toThrow("valid webhook URL");
   }

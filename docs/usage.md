@@ -79,7 +79,7 @@ Pass one object to `sendMessage`.
 | Option       | Default            | Description                                                            |
 | ------------ | ------------------ | ---------------------------------------------------------------------- |
 | `body`       | Required           | Discord message data.                                                  |
-| `url`        | `DISCORD_WEBHOOK`  | Absolute webhook URL with the `https:` scheme.                         |
+| `url`        | `DISCORD_WEBHOOK`  | HTTPS URL on `discord.com` with the `/api/webhooks/{id}/{token}` path. |
 | `maxRetries` | `3`                | Number of retries for HTTP 429 responses. Use an integer from 0 to 10. |
 | `fetchFn`    | `globalThis.fetch` | Fetch-compatible function for the request.                             |
 | `timeoutMs`  | `30000`            | Time limit in milliseconds for each request. Use a positive number.    |
@@ -88,6 +88,8 @@ Pass one object to `sendMessage`.
 | `threadId`   | None               | Send the message to a `thread` by its ID.                              |
 | `threadName` | None               | Create a `thread` with this name in a forum or media channel.          |
 | `logger`     | None               | Optional logger with methods for the supported log levels.             |
+
+Use the URL that Discord generated for the webhook. The package accepts only HTTPS URLs on `discord.com` with the webhook API path.
 
 ## Logging
 

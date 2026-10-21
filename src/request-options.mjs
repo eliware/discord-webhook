@@ -1,10 +1,18 @@
 const MAX_RETRIES = 10;
+const WEBHOOK_PATH = /^\/api(?:\/v\d+)?\/webhooks\/\d+\/[A-Za-z0-9._-]+\/?$/;
 
 export function validateOptions({ body, url, maxRetries, fetchFn, timeoutMs, signal }) {
   if (!url || typeof url !== "string") throw new Error("A valid webhook URL is required.");
   try {
     const target = new URL(url);
-    if (target.protocol !== "https:") {
+    if (
+      target.protocol !== "https:" ||
+      target.hostname !== "discord.com" ||
+      target.port !== "" ||
+      target.username !== "" ||
+      target.password !== "" ||
+      !WEBHOOK_PATH.test(target.pathname)
+    ) {
       throw new Error("Unsupported webhook URL scheme.");
     }
   } catch {
