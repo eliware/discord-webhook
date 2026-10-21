@@ -2,6 +2,14 @@
 
 ## 15.0.0 — 2026-10-21
 
+### Breaking changes
+
+- Accept only HTTPS URLs on `discord.com` with a supported Discord webhook API path. Other hosts and URL paths fail validation.
+
+### Migration
+
+- Replace custom hosts or unsupported URL paths with the HTTPS webhook URL that Discord generated for the webhook.
+
 ### Added
 
 - Accept HTTP-date values in the `Retry-After` response header.
