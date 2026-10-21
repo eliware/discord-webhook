@@ -1,17 +1,19 @@
 # Release Notes
 
-## 14.0.0 — 2026-10-20
+## 14.0.0 — 2026-10-21
 
 ### Added
 
-- Add `@eliware/log` as a runtime dependency and support an injectable logger in `sendMessage`.
-- Write structured request, response, retry, and failure events without webhook URLs or message bodies.
-- Document how to pass a logger and use its supported levels.
+- Add `@eliware/log` 14 as a runtime dependency and add an optional `logger` option to `sendMessage`.
+- Write structured request, response, retry, and failure events at the seven supported log levels.
+- Keep webhook URLs, message bodies, credentials, and raw error text out of library log records.
 
 ### Changed
 
-- Align the package, specification, and repository guidance with Convention v14.
-- Use `@eliware/test` v14 and update the npm dependency tree.
+- Set the package version to 14.0.0 and the directive version to 14.0.
+- Align repository guidance with Convention v14.
+- Upgrade `@eliware/test` to v14 and refresh the npm dependency tree.
+- Expand end-user guides with API types, logger events, custom fetch behavior, cancellation, and request details.
 
 ## 13.0.0 — 2026-10-19
 
