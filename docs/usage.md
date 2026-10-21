@@ -59,6 +59,19 @@ The package exports three JavaScript functions and values:
 
 The package also includes TypeScript declarations for `DiscordEmbed`, `DiscordMessage`, `SendMessageParams`, and `WebhookLogger`.
 
+Use the declarations from the package import:
+
+```ts
+import { sendMessage, type SendMessageParams } from "@eliware/discord-webhook";
+
+const options: SendMessageParams = {
+  body: { content: "Build complete." },
+  wait: true,
+};
+
+const response = await sendMessage(options);
+```
+
 ## Options
 
 Pass one object to `sendMessage`.
@@ -79,7 +92,9 @@ Pass one object to `sendMessage`.
 ## Logging
 
 Pass a logger with `logger` to receive structured event names and safe context. The package does not log when you omit this option.
-Logger methods use the `method(message, context)` interface. The supported levels are `error`, `warn`, `info`, `http`, `verbose`, `debug`, and `silly`.
+Logger methods use the `method(message, context)` interface. Each method is optional.
+The supported levels are `error`, `warn`, `info`, `http`, `verbose`, `debug`, and `silly`.
+The package skips a level when the logger does not provide its method.
 
 ```js
 import { createLogger } from "@eliware/log";
@@ -159,7 +174,7 @@ The request timeout does not limit the retry wait.
 If both retry values are missing or invalid, the package waits one second.
 After the final rate-limit response, the package throws `Rate limit retry count exceeded.`
 
-The timeout applies to each network request and each response body read for an HTTP error or rate limit.
+The timeout covers one request from the start of `fetch` through the response body read for an HTTP error or rate limit.
 It does not include time spent waiting between retries.
 
 The package throws `Webhook request timed out.` when the timeout ends the request.
@@ -171,8 +186,30 @@ Network errors from `fetch` can also reject the request. The package does not co
 
 Set `fetchFn` to a function that accepts the same URL and options as the built-in `fetch` function.
 The package passes a `POST` method, a JSON content type, a serialized body, and an `AbortSignal` to this function.
-Return a response object with `status`, `ok`, `headers`, and `text()` behavior.
+Return a response object with `status` and `text()` behavior for HTTP errors or rate limits.
+The package uses `ok` when the response provides it. The package reads `headers.get("retry-after")` when that method is available.
 Respect the supplied signal so that the timeout and caller cancellation can stop the network request.
+
+## Cancel a request
+
+Create an `AbortController` and pass its signal to `sendMessage`:
+
+```js
+const controller = new AbortController();
+const pending = sendMessage({
+  body: { content: "Build complete." },
+  signal: controller.signal,
+});
+
+controller.abort();
+try {
+  await pending;
+} catch (error) {
+  console.log(error.message);
+}
+```
+
+The promise rejects with `Webhook request aborted.` when the signal cancels a request or retry wait.
 
 ## Security
 

@@ -55,7 +55,8 @@ Set `wait: true` when the application needs Discord to return the created messag
 ## A custom fetch function fails
 
 Pass a function that accepts the standard `fetch` URL and options arguments.
-Make sure the function respects the supplied `AbortSignal` and returns a response object with `status`, `ok`, `headers`, and `text()` behavior.
+Make sure the function respects the supplied `AbortSignal` and returns a response object with `status` and `text()` behavior for errors.
+The package uses `ok` when the response provides it. The package reads `headers.get("retry-after")` when that method is available.
 
 ## The logger receives no events
 
