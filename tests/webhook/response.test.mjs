@@ -25,7 +25,7 @@ test("uses retry_after from the rate limit response body when the header is miss
   await expect(readResponse(response, 1000)).resolves.toEqual({ response, retryAfter: 2500 });
 });
 
-test("aborts a rate limit response body read when the caller cancels", async () => {
+test("propagates cancellation while reading a rate limit response", async () => {
   const controller = new AbortController();
   const response = {
     status: 429,
@@ -84,7 +84,7 @@ test("reports an HTTP error without a response body", async () => {
   );
 });
 
-test("rejects response body reads when the signal is already aborted", async () => {
+test("propagates an already aborted signal while reading an HTTP error", async () => {
   const controller = new AbortController();
   controller.abort();
   const response = { status: 400, ok: false, text: async () => "bad payload" };

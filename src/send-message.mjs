@@ -1,6 +1,7 @@
 import { validateWebhookBody } from "./validate-webhook-body.mjs";
 import { requestWithRetries } from "./webhook/request.mjs";
-import { addQueryOptions, validateOptions } from "./request-options.mjs";
+import { validateOptions } from "./request-options.mjs";
+import { addQueryOptions } from "./webhook/query-options.mjs";
 import { writeLog } from "./logging.mjs";
 
 const DEFAULT_TIMEOUT = 30_000;
