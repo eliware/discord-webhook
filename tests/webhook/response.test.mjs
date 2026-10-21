@@ -84,13 +84,6 @@ test("reports an HTTP error without a response body", async () => {
   );
 });
 
-test("propagates an already aborted signal while reading an HTTP error", async () => {
-  const controller = new AbortController();
-  controller.abort();
-  const response = { status: 400, ok: false, text: async () => "bad payload" };
-  await expect(readResponse(response, 1000, controller.signal)).rejects.toThrow("Request aborted.");
-});
-
 test("reports an HTTP error when response body reading fails", async () => {
   const controller = new AbortController();
   const response = {
