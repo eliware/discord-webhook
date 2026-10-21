@@ -2,11 +2,28 @@
 
 ## 15.0.0 — 2026-10-21
 
+### Added
+
+- Accept HTTP-date values in the `Retry-After` response header.
+- Validate custom `fetchFn` values before sending a request.
+
 ### Changed
 
 - Set the package and directive specification versions to 15.0.0 and 15.0.
 - Upgrade `@eliware/log` and `@eliware/test` to v15.
 - Refresh the npm dependency tree to current releases.
+- Accept webhook URLs only on `discord.com` with the Discord webhook API path.
+- Accept webhook path segments with unrecognized values and reject encoded path separators.
+- Make `sendMessage` parameters optional in the TypeScript declaration.
+- Document how to read the response body and describe URL and timeout behavior.
+- Split embed validation, text counting, query options, response body reading, and retry parsing into focused modules.
+
+### Fixed
+
+- Validate webhook message bodies and retry ranges before requests.
+- Keep request cancellation and fetch checks in agreement.
+- Parse retry delays from seconds, HTTP dates, or the response body.
+- Keep request timeouts active while the package reads HTTP error bodies.
 
 ## 14.0.0 — 2026-10-21
 
