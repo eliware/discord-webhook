@@ -198,6 +198,20 @@ test("sends thread names in the body and thread IDs in the query", async () => {
   });
 });
 
+test("preserves query values from the webhook URL", async () => {
+  const response = { status: 204, ok: true };
+  const fetchFn = jest.fn(async () => response);
+  await sendMessage({
+    body: { content: "hi" },
+    url: "https://discord.com/api/webhooks/123/token?source=legacy",
+    fetchFn,
+    wait: true,
+  });
+  const target = new URL(fetchFn.mock.calls[0][0]);
+  expect(target.searchParams.get("source")).toBe("legacy");
+  expect(target.searchParams.get("wait")).toBe("true");
+});
+
 test("aborts a rate-limit wait from the caller signal", async () => {
   const controller = new AbortController();
   const pending = sendMessage({

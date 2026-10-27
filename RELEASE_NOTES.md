@@ -13,7 +13,6 @@
 ### Fixed
 
 - Enforce request timeouts while reading HTTP error and rate-limit response bodies.
-- Reject query strings and fragments on webhook URLs. Set the `wait` and `threadId` options for query values.
 
 ## 15.0.0 — 2026-10-21
 

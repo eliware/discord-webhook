@@ -22,6 +22,15 @@ test("accepts opaque webhook ID and token path segments", () => {
   ).toBeUndefined();
 });
 
+test("accepts webhook URLs with query strings and fragments", () => {
+  for (const url of [
+    "https://discord.com/api/webhooks/123/token?other=value",
+    "https://discord.com/api/webhooks/123/token#fragment",
+  ]) {
+    expect(validateOptions({ ...validOptions, url })).toBeUndefined();
+  }
+});
+
 test("rejects invalid URLs and message bodies", () => {
   for (const url of [
     undefined,
@@ -37,8 +46,6 @@ test("rejects invalid URLs and message bodies", () => {
     "https://user@discord.com/api/webhooks/123456789012345678/token",
     "https://discord.com/api/webhooks/123%2F456/token",
     "https://discord.com/api/webhooks/123/token%5Cextra",
-    "https://discord.com/api/webhooks/123/token?other=value",
-    "https://discord.com/api/webhooks/123/token#fragment",
   ]) {
     expect(() => validateOptions({ ...validOptions, url })).toThrow("valid webhook URL");
   }
