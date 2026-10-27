@@ -1,5 +1,13 @@
 # Release Notes
 
+## 15.0.1 — 2026-10-26
+
+### Changed
+
+- Set the package version to 15.0.1.
+- Upgrade `@eliware/log` and `@eliware/test` to 15.0.1.
+- Refresh the npm dependency tree.
+
 ## 15.0.0 — 2026-10-21
 
 ### Breaking changes
