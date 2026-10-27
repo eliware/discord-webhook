@@ -5,6 +5,7 @@ directives:
     dos:
       - Send messages through the Discord webhook API.
       - Accept only HTTPS URLs on discord.com with the Discord webhook API path.
+      - Reject query strings and fragments on webhook URLs.
       - Check message limits before each network request.
     donts:
       - Do not expose webhook credentials in source or logs.

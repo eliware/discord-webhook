@@ -1,34 +1,22 @@
 import { readResponse } from "./response.mjs";
 import { writeLog } from "../logging.mjs";
+import { createAbortControl } from "./transport/abort-control.mjs";
 
 export async function requestOnce(target, { body, fetchFn, timeoutMs, signal, logger }) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  const onAbort = () => controller.abort();
-  let rejectOnAbort;
-  const aborted = new Promise((_, reject) => {
-    rejectOnAbort = () => {
-      const error = new Error("Request aborted.");
-      error.name = "AbortError";
-      reject(error);
-    };
-    controller.signal.addEventListener("abort", rejectOnAbort, { once: true });
-  });
-  if (signal?.aborted) controller.abort();
-  else signal?.addEventListener("abort", onAbort, { once: true });
+  const abortControl = createAbortControl(timeoutMs, signal);
   try {
-    if (controller.signal.aborted) return await aborted;
+    if (abortControl.signal.aborted) return await abortControl.aborted;
     writeLog(logger, "http", "webhook.request.sent", { timeoutMs });
     const response = await Promise.race([
       fetchFn(target.toString(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
-        signal: controller.signal,
+        signal: abortControl.signal,
       }),
-      aborted,
+      abortControl.aborted,
     ]);
-    return await Promise.race([readResponse(response, controller.signal), aborted]);
+    return await Promise.race([readResponse(response, abortControl.signal), abortControl.aborted]);
   } catch (error) {
     writeLog(logger, "error", "webhook.request.failed", {
       errorType: error instanceof Error ? "Error" : "UnknownError",
@@ -37,8 +25,6 @@ export async function requestOnce(target, { body, fetchFn, timeoutMs, signal, lo
     if (error?.name === "AbortError") throw new Error("Webhook request timed out.");
     throw error;
   } finally {
-    clearTimeout(timer);
-    controller.signal.removeEventListener("abort", rejectOnAbort);
-    signal?.removeEventListener("abort", onAbort);
+    abortControl.cleanup();
   }
 }

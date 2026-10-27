@@ -8,10 +8,12 @@
 - Upgrade `@eliware/log` and `@eliware/test` to 15.0.1.
 - Refresh the npm dependency tree.
 - Split HTTP error handling and embed shape checks into focused modules.
+- Split request abort control, abortable body reads, and retry date formats into focused modules.
 
 ### Fixed
 
 - Enforce request timeouts while reading HTTP error and rate-limit response bodies.
+- Reject query strings and fragments on webhook URLs. Set the `wait` and `threadId` options for query values.
 
 ## 15.0.0 — 2026-10-21
 

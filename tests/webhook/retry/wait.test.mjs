@@ -15,3 +15,12 @@ test("resolves after the retry interval", async () => {
   await jest.advanceTimersByTimeAsync(1000);
   await expect(pending).resolves.toBeUndefined();
 });
+
+test("clears its timer when the caller aborts", async () => {
+  const controller = new AbortController();
+  const pending = waitForRetry(1000, controller.signal);
+  const assertion = expect(pending).rejects.toThrow("Webhook request aborted.");
+  controller.abort();
+  await assertion;
+  expect(jest.getTimerCount()).toBe(0);
+});
