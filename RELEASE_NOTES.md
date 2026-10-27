@@ -7,6 +7,11 @@
 - Set the package version to 15.0.1.
 - Upgrade `@eliware/log` and `@eliware/test` to 15.0.1.
 - Refresh the npm dependency tree.
+- Split HTTP error handling and embed shape checks into focused modules.
+
+### Fixed
+
+- Enforce request timeouts while reading HTTP error and rate-limit response bodies.
 
 ## 15.0.0 — 2026-10-21
 

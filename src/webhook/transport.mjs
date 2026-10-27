@@ -19,16 +19,16 @@ export async function requestOnce(target, { body, fetchFn, timeoutMs, signal, lo
   try {
     if (controller.signal.aborted) return await aborted;
     writeLog(logger, "http", "webhook.request.sent", { timeoutMs });
-    const request = async () => {
-      const response = await fetchFn(target.toString(), {
+    const response = await Promise.race([
+      fetchFn(target.toString(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
         signal: controller.signal,
-      });
-      return readResponse(response, timeoutMs, controller.signal);
-    };
-    return await Promise.race([request(), aborted]);
+      }),
+      aborted,
+    ]);
+    return await Promise.race([readResponse(response, controller.signal), aborted]);
   } catch (error) {
     writeLog(logger, "error", "webhook.request.failed", {
       errorType: error instanceof Error ? "Error" : "UnknownError",
